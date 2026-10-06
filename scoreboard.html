@@ -1,0 +1,700 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Handball Scoreboard</title>
+
+<style>
+body {
+    margin: 0;
+    background: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.container {
+    padding: 20px;
+}
+
+h1 {
+    font-size: 35px;
+}
+
+.scoreboard {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 40px;
+}
+
+.team {
+    width: 30%;
+}
+
+.team-name {
+    font-size: 40px;
+    margin-bottom: 20px;
+}
+
+.score {
+    font-size: 120px;
+    color: red;
+}
+
+.timer {
+    font-size: 90px;
+    color: yellow;
+}
+
+button {
+    padding: 15px 25px;
+    font-size: 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.green {
+    background: green;
+    color: white;
+}
+
+.red {
+    background: red;
+    color: white;
+}
+
+.blue {
+    background: blue;
+    color: white;
+}
+
+.orange {
+    background: orange;
+    color: black;
+}
+
+.admin-btn {
+    background: white;
+    color: black;
+}
+
+#adminPanel {
+    margin-top: 10px;
+}
+
+#adminStatus {
+    font-size: 18px;
+    color: yellow;
+    margin: 10px;
+}
+
+.control {
+    display: none;
+}
+
+input {
+    padding: 12px;
+    font-size: 20px;
+    width: 150px;
+    text-align: center;
+    border-radius: 8px;
+    border: none;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>U-17 BOYS SGFI STATE</h1>
+
+<!-- ADMIN LOGIN -->
+
+<div id="adminPanel">
+
+    <button class="admin-btn" onclick="openAdmin()">
+        ADMIN
+    </button>
+
+</div>
+
+<div id="adminStatus">
+    Viewing Mode
+</div>
+
+
+<!-- SCOREBOARD -->
+
+<div class="scoreboard">
+
+    <!-- TEAM A -->
+
+    <div class="team">
+
+        <div class="team-name">
+            AMDAVAD CITY
+        </div>
+
+        <div class="score" id="scoreA">
+            0
+        </div>
+
+        <div class="control">
+
+            <button class="green"
+                    onclick="changeScore('A',1)">
+                +1
+            </button>
+
+            <button class="red"
+                    onclick="changeScore('A',-1)">
+                -1
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TIMER -->
+
+    <div>
+
+        <div class="timer" id="timer">
+            20:00
+        </div>
+
+        <div class="control">
+
+            <button class="blue"
+                    onclick="startTimer()">
+                START
+            </button>
+
+            <button class="orange"
+                    onclick="stopTimer()">
+                STOP
+            </button>
+
+            <br>
+
+            <button onclick="resetMatch()">
+                RESET
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- TEAM B -->
+
+    <div class="team">
+
+        <div class="team-name">
+            KHEDA
+        </div>
+
+        <div class="score" id="scoreB">
+            0
+        </div>
+
+        <div class="control">
+
+            <button class="green"
+                    onclick="changeScore('B',1)">
+                +1
+            </button>
+
+            <button class="red"
+                    onclick="changeScore('B',-1)">
+                -1
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+
+<!-- FIREBASE -->
+
+<script type="module">
+
+import {
+    initializeApp
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+
+import {
+    getDatabase,
+    ref,
+    set,
+    onValue
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
+
+
+/* =========================
+   FIREBASE CONFIG
+========================= */
+
+const firebaseConfig = {
+
+    apiKey: "AIzaSyDdQaZ2rzJYgw-YKbchs06e2GrviPS9O4o",
+
+    authDomain:
+    "tejash-4a29b.firebaseapp.com",
+
+    databaseURL:
+    "https://tejash-4a29b-default-rtdb.firebaseio.com",
+
+    projectId:
+    "tejash-4a29b",
+
+    storageBucket:
+    "tejash-4a29b.firebasestorage.app",
+
+    messagingSenderId:
+    "1006513583161",
+
+    appId:
+    "1:1006513583161:web:0e11c433c61f096152c9e8"
+};
+
+
+/* START FIREBASE */
+
+const app =
+initializeApp(firebaseConfig);
+
+const db =
+getDatabase(app);
+
+
+/* VARIABLES */
+
+let scoreA = 0;
+let scoreB = 0;
+let totalSeconds = 1200;
+let timerInterval = null;
+
+let isAdmin = false;
+
+
+/* =========================
+   ADMIN PIN
+========================= */
+
+const ADMIN_PIN = "1516";
+
+
+/* =========================
+   ADMIN OPEN
+========================= */
+
+window.openAdmin = function() {
+
+    if (isAdmin) {
+
+        logoutAdmin();
+
+        return;
+    }
+
+
+    const pin =
+    prompt("Enter Admin PIN");
+
+
+    if (pin === ADMIN_PIN) {
+
+        isAdmin = true;
+
+        document.getElementById(
+            "adminStatus"
+        ).innerText =
+        "ADMIN MODE ON";
+
+        document.getElementById(
+            "adminStatus"
+        ).style.color =
+        "lightgreen";
+
+
+        const controls =
+        document.querySelectorAll(
+            ".control"
+        );
+
+
+        controls.forEach(function(control) {
+
+            control.style.display =
+            "block";
+
+        });
+
+
+        document.querySelector(
+            ".admin-btn"
+        ).innerText =
+        "EXIT ADMIN";
+
+
+    } else {
+
+        alert("Wrong PIN!");
+
+    }
+
+};
+
+
+/* =========================
+   EXIT ADMIN
+========================= */
+
+function logoutAdmin() {
+
+    isAdmin = false;
+
+
+    document.getElementById(
+        "adminStatus"
+    ).innerText =
+    "Viewing Mode";
+
+
+    document.getElementById(
+        "adminStatus"
+    ).style.color =
+    "yellow";
+
+
+    const controls =
+    document.querySelectorAll(
+        ".control"
+    );
+
+
+    controls.forEach(function(control) {
+
+        control.style.display =
+        "none";
+
+    });
+
+
+    document.querySelector(
+        ".admin-btn"
+    ).innerText =
+    "ADMIN";
+
+}
+
+
+/* =========================
+   LIVE FIREBASE DATA
+========================= */
+
+onValue(
+    ref(db),
+    function(snapshot) {
+
+        const data =
+        snapshot.val();
+
+
+        if (!data) {
+            return;
+        }
+
+
+        /* SCORE */
+
+        if (data.score) {
+
+            scoreA =
+            data.score.A || 0;
+
+            scoreB =
+            data.score.B || 0;
+
+        }
+
+
+        /* TIMER */
+
+        if (data.timer) {
+
+            totalSeconds =
+            data.timer.time ?? 1200;
+
+        }
+
+
+        /* DISPLAY */
+
+        document.getElementById(
+            "scoreA"
+        ).innerText =
+        scoreA;
+
+
+        document.getElementById(
+            "scoreB"
+        ).innerText =
+        scoreB;
+
+
+        updateDisplayTime();
+
+    }
+);
+
+
+/* =========================
+   SCORE CHANGE
+========================= */
+
+window.changeScore =
+function(team, value) {
+
+    if (!isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
+
+        return;
+    }
+
+
+    if (team === "A") {
+
+        scoreA += value;
+
+        if (scoreA < 0) {
+            scoreA = 0;
+        }
+
+    }
+
+
+    if (team === "B") {
+
+        scoreB += value;
+
+        if (scoreB < 0) {
+            scoreB = 0;
+        }
+
+    }
+
+
+    set(
+        ref(db, "score"),
+        {
+            A: scoreA,
+            B: scoreB
+        }
+    );
+
+};
+
+
+/* =========================
+   TIMER DISPLAY
+========================= */
+
+function updateDisplayTime() {
+
+    let minutes =
+    Math.floor(
+        totalSeconds / 60
+    );
+
+    let seconds =
+    totalSeconds % 60;
+
+
+    if (seconds < 10) {
+
+        seconds =
+        "0" + seconds;
+
+    }
+
+
+    document.getElementById(
+        "timer"
+    ).innerText =
+    minutes + ":" + seconds;
+
+}
+
+
+/* =========================
+   START TIMER
+========================= */
+
+window.startTimer =
+function() {
+
+    if (!isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
+
+        return;
+    }
+
+
+    if (timerInterval !== null) {
+        return;
+    }
+
+
+    timerInterval =
+    setInterval(function() {
+
+        if (totalSeconds <= 0) {
+
+            stopTimer();
+
+            return;
+
+        }
+
+
+        totalSeconds--;
+
+        updateDisplayTime();
+
+
+        set(
+            ref(db, "timer"),
+            {
+                time: totalSeconds
+            }
+        );
+
+
+    }, 1000);
+
+};
+
+
+/* =========================
+   STOP TIMER
+========================= */
+
+window.stopTimer =
+function() {
+
+    if (!isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
+
+        return;
+    }
+
+
+    if (timerInterval !== null) {
+
+        clearInterval(
+            timerInterval
+        );
+
+        timerInterval = null;
+
+    }
+
+};
+
+
+/* =========================
+   RESET MATCH
+========================= */
+
+window.resetMatch =
+function() {
+
+    if (!isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
+
+        return;
+    }
+
+
+    if (
+        !confirm(
+            "Reset complete match?"
+        )
+    ) {
+
+        return;
+    }
+
+
+    stopTimer();
+
+
+    scoreA = 0;
+
+    scoreB = 0;
+
+    totalSeconds = 1200;
+
+
+    updateDisplayTime();
+
+
+    document.getElementById(
+        "scoreA"
+    ).innerText = 0;
+
+
+    document.getElementById(
+        "scoreB"
+    ).innerText = 0;
+
+
+    set(
+        ref(db),
+        {
+
+            score: {
+                A: 0,
+                B: 0
+            },
+
+            timer: {
+                time: 1200
+            }
+
+        }
+    );
+
+};
+
+</script>
+
+</body>
+</html>
+```
