@@ -237,11 +237,9 @@ select {
 </div>
 
 <div id="adminPanel">
-
     <button class="admin-btn" onclick="openAdmin()">
         ADMIN
     </button>
-
 </div>
 
 <div id="adminStatus">
@@ -249,9 +247,7 @@ select {
 </div>
 
 
-<!-- =========================
-     SCOREBOARD
-========================= -->
+<!-- SCOREBOARD -->
 
 <div class="scoreboard">
 
@@ -355,9 +351,7 @@ select {
 </div>
 
 
-<!-- =========================
-     ADMIN CONTROL PANEL
-========================= -->
+<!-- ADMIN CONTROL PANEL -->
 
 <div class="admin-section" id="controlPanel">
 
@@ -510,9 +504,7 @@ select {
 </div>
 
 
-<!-- =========================
-     FIREBASE
-========================= -->
+<!-- FIREBASE -->
 
 <script type="module">
 
@@ -530,39 +522,20 @@ import {
 
 
 /* =========================
-   FIREBASE CONFIG
+   FIREBASE
 ========================= */
 
 const firebaseConfig = {
 
-    apiKey:
-    "AIzaSyDdQaZ2rzJYgw-YKbchs06e2GrviPS9O4o",
-
-    authDomain:
-    "tejash-4a29b.firebaseapp.com",
-
     databaseURL:
-    "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com",
+    "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com"
 
-    projectId:
-    "tejash-4a29b",
-
-    storageBucket:
-    "tejash-4a29b.firebasestorage.app",
-
-    messagingSenderId:
-    "1006513583161",
-
-    appId:
-    "1:1006513583161:web:0e11c433c61f096152c9e8"
 };
 
 
-const app =
-    initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const db =
-    getDatabase(app);
+const db = getDatabase(app);
 
 
 /* =========================
@@ -590,6 +563,14 @@ const ADMIN_PIN = "1516";
 
 
 /* =========================
+   SHOW INITIAL SCORE
+========================= */
+
+document.getElementById("scoreA").innerText = "0";
+document.getElementById("scoreB").innerText = "0";
+
+
+/* =========================
    ADMIN
 ========================= */
 
@@ -602,8 +583,7 @@ window.openAdmin = function() {
         return;
     }
 
-    const pin =
-        prompt("Enter Admin PIN");
+    const pin = prompt("Enter Admin PIN");
 
     if (pin === ADMIN_PIN) {
 
@@ -617,9 +597,7 @@ window.openAdmin = function() {
 
         document.querySelectorAll(".control")
             .forEach(function(x) {
-
                 x.style.display = "block";
-
             });
 
         document.getElementById("controlPanel")
@@ -650,9 +628,7 @@ function logoutAdmin() {
 
     document.querySelectorAll(".control")
         .forEach(function(x) {
-
             x.style.display = "none";
-
         });
 
     document.getElementById("controlPanel")
@@ -672,10 +648,21 @@ onValue(
     ref(db),
     function(snapshot) {
 
-        const data =
-            snapshot.val();
+        const data = snapshot.val();
 
         if (!data) {
+
+            scoreA = 0;
+            scoreB = 0;
+
+            document.getElementById("scoreA")
+                .innerText = "0";
+
+            document.getElementById("scoreB")
+                .innerText = "0";
+
+            displayRecords();
+
             return;
         }
 
@@ -684,19 +671,22 @@ onValue(
 
         if (data.score) {
 
-            scoreA =
-                data.score.A || 0;
-
-            scoreB =
-                data.score.B || 0;
-
-            document.getElementById("scoreA")
-                .innerText = scoreA;
-
-            document.getElementById("scoreB")
-                .innerText = scoreB;
+            scoreA = Number(data.score.A || 0);
+            scoreB = Number(data.score.B || 0);
 
         }
+        else {
+
+            scoreA = 0;
+            scoreB = 0;
+
+        }
+
+        document.getElementById("scoreA")
+            .innerText = scoreA;
+
+        document.getElementById("scoreB")
+            .innerText = scoreB;
 
 
         /* TIMER */
@@ -704,7 +694,7 @@ onValue(
         if (data.timer) {
 
             totalSeconds =
-                data.timer.time ?? 1200;
+                Number(data.timer.time ?? 1200);
 
             timerRunning =
                 data.timer.running || false;
@@ -719,8 +709,7 @@ onValue(
 
         if (data.match) {
 
-            const m =
-                data.match;
+            const m = data.match;
 
             document.getElementById("titleText")
                 .innerText =
@@ -749,24 +738,19 @@ onValue(
             if (isAdmin) {
 
                 document.getElementById("titleInput")
-                    .value =
-                    m.title || "";
+                    .value = m.title || "";
 
                 document.getElementById("matchNoInput")
-                    .value =
-                    m.matchNo || 1;
+                    .value = m.matchNo || 1;
 
                 document.getElementById("dateInput")
-                    .value =
-                    m.date || "";
+                    .value = m.date || "";
 
                 document.getElementById("teamAInput")
-                    .value =
-                    m.teamA || "";
+                    .value = m.teamA || "";
 
                 document.getElementById("teamBInput")
-                    .value =
-                    m.teamB || "";
+                    .value = m.teamB || "";
 
             }
 
@@ -793,6 +777,11 @@ onValue(
 
         displayRecords();
 
+    },
+    function(error) {
+
+        console.log("Firebase read error:", error);
+
     }
 );
 
@@ -801,8 +790,7 @@ onValue(
    SCORE
 ========================= */
 
-window.changeScore =
-function(team, value) {
+window.changeScore = function(team, value) {
 
     if (!isAdmin) {
 
@@ -834,13 +822,37 @@ function(team, value) {
     }
 
 
+    /* SCREEN UPDATE IMMEDIATELY */
+
+    document.getElementById("scoreA")
+        .innerText = scoreA;
+
+    document.getElementById("scoreB")
+        .innerText = scoreB;
+
+
+    /* FIREBASE SAVE */
+
     set(
         ref(db, "score"),
         {
             A: scoreA,
             B: scoreB
         }
-    );
+    )
+    .then(function() {
+
+        console.log("Score saved");
+
+    })
+    .catch(function(error) {
+
+        alert(
+            "Score save error: " +
+            error.message
+        );
+
+    });
 
 
     if (value > 0) {
@@ -883,8 +895,7 @@ function playGoalSound() {
 
 function updateTimerDisplay() {
 
-    let seconds =
-        totalSeconds;
+    let seconds = totalSeconds;
 
 
     if (timerRunning && timerEndAt) {
@@ -923,9 +934,7 @@ function updateTimerDisplay() {
     ) {
 
         timerRunning = false;
-
         timerEndAt = null;
-
         totalSeconds = 0;
 
     }
@@ -942,7 +951,6 @@ setInterval(
     function() {
 
         updateTimerDisplay();
-
         updateTimeoutDisplay();
 
     },
@@ -954,8 +962,7 @@ setInterval(
    START TIMER
 ========================= */
 
-window.startTimer =
-function() {
+window.startTimer = function() {
 
     if (!isAdmin) {
 
@@ -991,7 +998,15 @@ function() {
             running: true,
             endAt: timerEndAt
         }
-    );
+    )
+    .catch(function(error) {
+
+        alert(
+            "Timer save error: " +
+            error.message
+        );
+
+    });
 
 };
 
@@ -1000,8 +1015,7 @@ function() {
    STOP TIMER
 ========================= */
 
-window.stopTimer =
-function() {
+window.stopTimer = function() {
 
     if (!isAdmin) {
 
@@ -1026,7 +1040,6 @@ function() {
 
 
     timerRunning = false;
-
     timerEndAt = null;
 
 
@@ -1037,7 +1050,15 @@ function() {
             running: false,
             endAt: null
         }
-    );
+    )
+    .catch(function(error) {
+
+        alert(
+            "Timer save error: " +
+            error.message
+        );
+
+    });
 
 };
 
@@ -1046,8 +1067,7 @@ function() {
    RESET TIMER
 ========================= */
 
-window.resetTimer =
-function() {
+window.resetTimer = function() {
 
     if (!isAdmin) {
 
@@ -1058,10 +1078,12 @@ function() {
 
 
     timerRunning = false;
-
     timerEndAt = null;
-
     totalSeconds = 1200;
+
+
+    document.getElementById("timer")
+        .innerText = "20:00";
 
 
     set(
@@ -1071,7 +1093,15 @@ function() {
             running: false,
             endAt: null
         }
-    );
+    )
+    .catch(function(error) {
+
+        alert(
+            "Timer reset error: " +
+            error.message
+        );
+
+    });
 
 };
 
@@ -1080,8 +1110,7 @@ function() {
    MATCH SETTINGS
 ========================= */
 
-window.saveMatchSettings =
-function() {
+window.saveMatchSettings = function() {
 
     if (!isAdmin) {
 
@@ -1125,7 +1154,20 @@ function() {
             teamA: teamA,
             teamB: teamB
         }
-    );
+    )
+    .then(function() {
+
+        alert("Team / Match Saved Successfully!");
+
+    })
+    .catch(function(error) {
+
+        alert(
+            "Match save error: " +
+            error.message
+        );
+
+    });
 
 };
 
@@ -1134,8 +1176,7 @@ function() {
    TIMEOUT
 ========================= */
 
-window.startTimeout =
-function(team) {
+window.startTimeout = function(team) {
 
     if (!isAdmin) {
 
@@ -1157,7 +1198,15 @@ function(team) {
             team: team,
             endAt: timeoutEndAt
         }
-    );
+    )
+    .catch(function(error) {
+
+        alert(
+            "Timeout save error: " +
+            error.message
+        );
+
+    });
 
 };
 
@@ -1194,7 +1243,6 @@ function updateTimeoutDisplay() {
         el.innerText = "";
 
         timeoutEndAt = null;
-
         timeoutTeam = null;
 
         return;
@@ -1220,8 +1268,7 @@ function updateTimeoutDisplay() {
    PLAYER CARDS
 ========================= */
 
-window.giveCard =
-function(type) {
+window.giveCard = function(type) {
 
     if (!isAdmin) {
 
@@ -1260,24 +1307,17 @@ function(type) {
 
     if (type === "yellow") {
 
-        cardText =
-            "🟨 Yellow Card";
+        cardText = "🟨 Yellow Card";
 
     }
-
-
     else if (type === "twoMin") {
 
-        cardText =
-            "🔵 2 Minute Suspension";
+        cardText = "🔵 2 Minute Suspension";
 
     }
-
-
     else if (type === "red") {
 
-        cardText =
-            "🟥 Red Card";
+        cardText = "🟥 Red Card";
 
     }
 
@@ -1290,43 +1330,32 @@ function(type) {
         newRecord,
         {
             team: team,
-
             teamName: teamName,
-
             player: player,
-
             type: type,
-
             text: cardText,
-
-            time:
-                new Date()
-                .toLocaleTimeString()
+            time: new Date().toLocaleTimeString()
         }
     )
-    .then(
-        function() {
+    .then(function() {
 
-            alert(
-                cardText +
-                " saved successfully"
-            );
+        alert(
+            cardText +
+            " saved successfully"
+        );
 
-            document.getElementById("playerName")
-                .value = "";
+        document.getElementById("playerName")
+            .value = "";
 
-        }
-    )
-    .catch(
-        function(error) {
+    })
+    .catch(function(error) {
 
-            alert(
-                "Card save error: " +
-                error.message
-            );
+        alert(
+            "Card save error: " +
+            error.message
+        );
 
-        }
-    );
+    });
 
 };
 
@@ -1345,31 +1374,28 @@ function displayRecords() {
 
 
     Object.values(recordsData)
-        .forEach(
-            function(record) {
+        .forEach(function(record) {
 
-                const div =
-                    document.createElement("div");
-
-
-                div.className =
-                    "record";
+            const div =
+                document.createElement("div");
 
 
-                div.innerText =
-                    record.teamName +
-                    " | Player: " +
-                    record.player +
-                    " | " +
-                    record.text +
-                    " | " +
-                    record.time;
+            div.className = "record";
 
 
-                box.appendChild(div);
+            div.innerText =
+                (record.teamName || record.team || "") +
+                " | Player: " +
+                (record.player || "") +
+                " | " +
+                (record.text || "") +
+                " | " +
+                (record.time || "");
 
-            }
-        );
+
+            box.appendChild(div);
+
+        });
 
 }
 
@@ -1378,8 +1404,7 @@ function displayRecords() {
    SAVE FINAL RESULT
 ========================= */
 
-window.saveFinalResult =
-function() {
+window.saveFinalResult = function() {
 
     if (!isAdmin) {
 
@@ -1417,11 +1442,9 @@ function() {
                 ).innerText,
 
             teamA: teamA,
-
             teamB: teamB,
 
             scoreA: scoreA,
-
             scoreB: scoreB,
 
             savedAt:
@@ -1429,25 +1452,21 @@ function() {
                 .toLocaleString()
         }
     )
-    .then(
-        function() {
+    .then(function() {
 
-            alert(
-                "Final Result Saved Successfully!"
-            );
+        alert(
+            "Final Result Saved Successfully!"
+        );
 
-        }
-    )
-    .catch(
-        function(error) {
+    })
+    .catch(function(error) {
 
-            alert(
-                "Result save error: " +
-                error.message
-            );
+        alert(
+            "Result save error: " +
+            error.message
+        );
 
-        }
-    );
+    });
 
 };
 
@@ -1456,8 +1475,7 @@ function() {
    RESET COMPLETE MATCH
 ========================= */
 
-window.resetMatch =
-function() {
+window.resetMatch = function() {
 
     if (!isAdmin) {
 
@@ -1478,18 +1496,30 @@ function() {
 
 
     scoreA = 0;
-
     scoreB = 0;
 
     totalSeconds = 1200;
 
     timerRunning = false;
-
     timerEndAt = null;
 
     timeoutEndAt = null;
-
     timeoutTeam = null;
+
+    recordsData = {};
+
+
+    document.getElementById("scoreA")
+        .innerText = "0";
+
+    document.getElementById("scoreB")
+        .innerText = "0";
+
+    document.getElementById("timer")
+        .innerText = "20:00";
+
+    document.getElementById("records")
+        .innerHTML = "";
 
 
     set(
@@ -1514,15 +1544,21 @@ function() {
             records: {}
         }
     )
-    .then(
-        function() {
+    .then(function() {
 
-            alert(
-                "Match Reset Successfully!"
-            );
+        alert(
+            "Match Reset Successfully!"
+        );
 
-        }
-    );
+    })
+    .catch(function(error) {
+
+        alert(
+            "Reset error: " +
+            error.message
+        );
+
+    });
 
 };
 
