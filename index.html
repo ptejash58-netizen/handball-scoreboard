@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Handball Scoreboard</title>
 
 <style>
+
 * {
     box-sizing: border-box;
 }
@@ -30,17 +32,11 @@ h1 {
     margin: 10px 0;
 }
 
-.match-info {
-    font-size: 20px;
-    margin: 8px;
-    color: #ccc;
-}
-
 .scoreboard {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 30px;
+    margin-top: 40px;
     gap: 10px;
 }
 
@@ -95,29 +91,18 @@ button {
     color: black;
 }
 
-.admin-btn {
-    background: white;
-    color: black;
-}
-
 .gray {
     background: #555;
     color: white;
 }
 
-.yellow {
-    background: #ffd400;
+.admin-btn {
+    background: white;
     color: black;
 }
 
-.darkred {
-    background: #8b0000;
-    color: white;
-}
-
-.purple {
-    background: purple;
-    color: white;
+.control {
+    display: none;
 }
 
 #adminStatus {
@@ -126,73 +111,14 @@ button {
     margin: 10px;
 }
 
-.control {
-    display: none;
-}
-
-input,
-select {
-    padding: 10px;
-    font-size: 17px;
-    border-radius: 6px;
-    border: none;
-    margin: 4px;
-    text-align: center;
-}
-
-.admin-section {
-    display: none;
-    background: #151515;
-    padding: 15px;
-    margin-top: 15px;
-    border-radius: 12px;
-}
-
-.section-title {
-    font-size: 24px;
-    color: yellow;
-    margin: 10px;
-}
-
-.panel {
-    margin: 12px auto;
-    padding: 12px;
-    border: 1px solid #444;
-    border-radius: 10px;
-    max-width: 900px;
-}
-
-.records {
-    text-align: left;
-    max-width: 700px;
-    margin: auto;
-}
-
-.record {
-    padding: 8px;
-    margin: 5px;
-    background: #222;
-    border-radius: 5px;
-}
-
-.timeout {
-    color: orange;
-    font-size: 22px;
-}
-
-.status {
-    margin: 8px;
-    font-size: 18px;
-}
-
-@media(max-width: 700px) {
+@media(max-width:700px) {
 
     h1 {
         font-size: 24px;
     }
 
     .scoreboard {
-        margin-top: 15px;
+        margin-top: 20px;
     }
 
     .team-name {
@@ -212,38 +138,27 @@ select {
         padding: 10px 12px;
     }
 
-    input,
-    select {
-        width: 90%;
-    }
 }
+
 </style>
+
 </head>
 
 <body>
 
 <div class="container">
 
-<h1 id="titleText">U-17 BOYS SGFI STATE</h1>
+<h1>HANDBALL SCOREBOARD</h1>
 
-<div class="match-info">
-    Match No:
-    <span id="matchNoDisplay">1</span>
 
-    &nbsp; | &nbsp;
+<!-- ADMIN -->
 
-    Date:
-    <span id="dateDisplay">-</span>
-</div>
-
-<div id="adminPanel">
-    <button class="admin-btn" onclick="openAdmin()">
-        ADMIN
-    </button>
-</div>
+<button class="admin-btn" onclick="openAdmin()">
+ADMIN
+</button>
 
 <div id="adminStatus">
-    Viewing Mode
+Viewing Mode
 </div>
 
 
@@ -251,260 +166,101 @@ select {
 
 <div class="scoreboard">
 
-    <!-- TEAM A -->
 
-    <div class="team">
+<!-- TEAM A -->
 
-        <div class="team-name" id="teamAName">
-            AMDAVAD CITY
-        </div>
+<div class="team">
 
-        <div class="score" id="scoreA">
-            0
-        </div>
-
-        <div class="control">
-
-            <button class="green"
-                    onclick="changeScore('A',1)">
-                +1 GOAL
-            </button>
-
-            <button class="red"
-                    onclick="changeScore('A',-1)">
-                -1
-            </button>
-
-        </div>
-
-        <div class="status">
-            <span id="timeoutA"></span>
-        </div>
-
-    </div>
-
-
-    <!-- TIMER -->
-
-    <div>
-
-        <div class="timer" id="timer">
-            20:00
-        </div>
-
-        <div class="control">
-
-            <button class="blue"
-                    onclick="startTimer()">
-                START
-            </button>
-
-            <button class="orange"
-                    onclick="stopTimer()">
-                STOP
-            </button>
-
-            <br>
-
-            <button class="gray"
-                    onclick="resetTimer()">
-                RESET TIMER
-            </button>
-
-        </div>
-
-    </div>
-
-
-    <!-- TEAM B -->
-
-    <div class="team">
-
-        <div class="team-name" id="teamBName">
-            KHEDA
-        </div>
-
-        <div class="score" id="scoreB">
-            0
-        </div>
-
-        <div class="control">
-
-            <button class="green"
-                    onclick="changeScore('B',1)">
-                +1 GOAL
-            </button>
-
-            <button class="red"
-                    onclick="changeScore('B',-1)">
-                -1
-            </button>
-
-        </div>
-
-        <div class="status">
-            <span id="timeoutB"></span>
-        </div>
-
-    </div>
-
+<div class="team-name" id="teamAName">
+AMDAVAD CITY
 </div>
 
+<div class="score" id="scoreA">
+0
+</div>
 
-<!-- ADMIN CONTROL PANEL -->
+<div class="control">
 
-<div class="admin-section" id="controlPanel">
+<button class="green"
+onclick="changeScore('A',1)">
++1
+</button>
 
-    <div class="section-title">
-        ADMIN CONTROL
-    </div>
-
-
-    <!-- MATCH SETTINGS -->
-
-    <div class="panel">
-
-        <div class="section-title">
-            MATCH SETTINGS
-        </div>
-
-        <input id="titleInput"
-               placeholder="Match Title">
-
-        <input id="matchNoInput"
-               type="number"
-               placeholder="Match No">
-
-        <input id="dateInput"
-               type="date">
-
-        <br>
-
-        <input id="teamAInput"
-               placeholder="Team A Name">
-
-        <input id="teamBInput"
-               placeholder="Team B Name">
-
-        <br>
-
-        <button class="blue"
-                onclick="saveMatchSettings()">
-            SAVE TEAM / MATCH
-        </button>
-
-    </div>
-
-
-    <!-- TIMEOUT -->
-
-    <div class="panel">
-
-        <div class="section-title">
-            TIMEOUT
-        </div>
-
-        <button class="orange"
-                onclick="startTimeout('A')">
-            TEAM A TIMEOUT
-        </button>
-
-        <button class="orange"
-                onclick="startTimeout('B')">
-            TEAM B TIMEOUT
-        </button>
-
-        <div class="timeout"
-             id="timeoutDisplay">
-        </div>
-
-    </div>
-
-
-    <!-- PLAYER CARDS -->
-
-    <div class="panel">
-
-        <div class="section-title">
-            PLAYER CARDS / SUSPENSION
-        </div>
-
-        <select id="cardTeam">
-
-            <option value="A">
-                TEAM A
-            </option>
-
-            <option value="B">
-                TEAM B
-            </option>
-
-        </select>
-
-        <input id="playerName"
-               placeholder="Player Name / No">
-
-        <br>
-
-        <button class="yellow"
-                onclick="giveCard('yellow')">
-            🟨 YELLOW CARD
-        </button>
-
-        <button class="blue"
-                onclick="giveCard('twoMin')">
-            🔵 2 MIN
-        </button>
-
-        <button class="darkred"
-                onclick="giveCard('red')">
-            🟥 RED CARD
-        </button>
-
-    </div>
-
-
-    <!-- MATCH RECORD -->
-
-    <div class="panel">
-
-        <div class="section-title">
-            MATCH RECORD
-        </div>
-
-        <div id="records"
-             class="records">
-        </div>
-
-    </div>
-
-
-    <!-- SAVE RESULT -->
-
-    <div class="panel">
-
-        <div class="section-title">
-            MATCH RESULT
-        </div>
-
-        <button class="purple"
-                onclick="saveFinalResult()">
-            💾 SAVE FINAL RESULT
-        </button>
-
-        <button class="red"
-                onclick="resetMatch()">
-            RESET COMPLETE MATCH
-        </button>
-
-    </div>
+<button class="red"
+onclick="changeScore('A',-1)">
+-1
+</button>
 
 </div>
 
 </div>
 
 
-<!-- FIREBASE -->
+<!-- TIME -->
+
+<div>
+
+<div class="timer" id="timer">
+20:00
+</div>
+
+<div class="control">
+
+<button class="blue"
+onclick="startTimer()">
+START
+</button>
+
+<button class="orange"
+onclick="stopTimer()">
+STOP
+</button>
+
+<br>
+
+<button class="gray"
+onclick="resetTimer()">
+RESET
+</button>
+
+</div>
+
+</div>
+
+
+<!-- TEAM B -->
+
+<div class="team">
+
+<div class="team-name" id="teamBName">
+KHEDA
+</div>
+
+<div class="score" id="scoreB">
+0
+</div>
+
+<div class="control">
+
+<button class="green"
+onclick="changeScore('B',1)">
++1
+</button>
+
+<button class="red"
+onclick="changeScore('B',-1)">
+-1
+</button>
+
+</div>
+
+</div>
+
+
+</div>
+
+</div>
+
 
 <script type="module">
 
@@ -516,8 +272,7 @@ import {
     getDatabase,
     ref,
     set,
-    onValue,
-    push
+    onValue
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 
@@ -533,9 +288,11 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const db = getDatabase(app);
+const db =
+    getDatabase(app);
 
 
 /* =========================
@@ -550,24 +307,9 @@ let totalSeconds = 1200;
 let timerRunning = false;
 let timerEndAt = null;
 
-let displayInterval = null;
-
 let isAdmin = false;
 
-let timeoutEndAt = null;
-let timeoutTeam = null;
-
-let recordsData = {};
-
 const ADMIN_PIN = "1516";
-
-
-/* =========================
-   SHOW INITIAL SCORE
-========================= */
-
-document.getElementById("scoreA").innerText = "0";
-document.getElementById("scoreB").innerText = "0";
 
 
 /* =========================
@@ -583,30 +325,37 @@ window.openAdmin = function() {
         return;
     }
 
-    const pin = prompt("Enter Admin PIN");
+
+    const pin =
+        prompt("Enter Admin PIN");
+
 
     if (pin === ADMIN_PIN) {
 
         isAdmin = true;
 
+
         document.getElementById("adminStatus")
             .innerText = "ADMIN MODE ON";
+
 
         document.getElementById("adminStatus")
             .style.color = "lightgreen";
 
+
         document.querySelectorAll(".control")
-            .forEach(function(x) {
-                x.style.display = "block";
+            .forEach(function(element) {
+
+                element.style.display = "block";
+
             });
 
-        document.getElementById("controlPanel")
-            .style.display = "block";
 
         document.querySelector(".admin-btn")
             .innerText = "EXIT ADMIN";
 
     }
+
     else {
 
         alert("Wrong PIN!");
@@ -616,23 +365,30 @@ window.openAdmin = function() {
 };
 
 
+/* =========================
+   LOGOUT
+========================= */
+
 function logoutAdmin() {
 
     isAdmin = false;
 
+
     document.getElementById("adminStatus")
         .innerText = "Viewing Mode";
+
 
     document.getElementById("adminStatus")
         .style.color = "yellow";
 
+
     document.querySelectorAll(".control")
-        .forEach(function(x) {
-            x.style.display = "none";
+        .forEach(function(element) {
+
+            element.style.display = "none";
+
         });
 
-    document.getElementById("controlPanel")
-        .style.display = "none";
 
     document.querySelector(".admin-btn")
         .innerText = "ADMIN";
@@ -641,29 +397,23 @@ function logoutAdmin() {
 
 
 /* =========================
-   LIVE DATABASE
+   LIVE FIREBASE DATA
 ========================= */
 
 onValue(
+
     ref(db),
+
     function(snapshot) {
 
-        const data = snapshot.val();
+        const data =
+            snapshot.val();
+
 
         if (!data) {
 
-            scoreA = 0;
-            scoreB = 0;
-
-            document.getElementById("scoreA")
-                .innerText = "0";
-
-            document.getElementById("scoreB")
-                .innerText = "0";
-
-            displayRecords();
-
             return;
+
         }
 
 
@@ -671,19 +421,18 @@ onValue(
 
         if (data.score) {
 
-            scoreA = Number(data.score.A || 0);
-            scoreB = Number(data.score.B || 0);
+            scoreA =
+                Number(data.score.A || 0);
+
+            scoreB =
+                Number(data.score.B || 0);
 
         }
-        else {
 
-            scoreA = 0;
-            scoreB = 0;
-
-        }
 
         document.getElementById("scoreA")
             .innerText = scoreA;
+
 
         document.getElementById("scoreB")
             .innerText = scoreB;
@@ -694,95 +443,31 @@ onValue(
         if (data.timer) {
 
             totalSeconds =
-                Number(data.timer.time ?? 1200);
+                Number(
+                    data.timer.time ?? 1200
+                );
+
 
             timerRunning =
                 data.timer.running || false;
+
 
             timerEndAt =
                 data.timer.endAt || null;
 
         }
 
-
-        /* MATCH */
-
-        if (data.match) {
-
-            const m = data.match;
-
-            document.getElementById("titleText")
-                .innerText =
-                m.title ||
-                "U-17 BOYS SGFI STATE";
-
-            document.getElementById("matchNoDisplay")
-                .innerText =
-                m.matchNo || 1;
-
-            document.getElementById("dateDisplay")
-                .innerText =
-                m.date || "-";
-
-            document.getElementById("teamAName")
-                .innerText =
-                m.teamA ||
-                "AMDAVAD CITY";
-
-            document.getElementById("teamBName")
-                .innerText =
-                m.teamB ||
-                "KHEDA";
-
-
-            if (isAdmin) {
-
-                document.getElementById("titleInput")
-                    .value = m.title || "";
-
-                document.getElementById("matchNoInput")
-                    .value = m.matchNo || 1;
-
-                document.getElementById("dateInput")
-                    .value = m.date || "";
-
-                document.getElementById("teamAInput")
-                    .value = m.teamA || "";
-
-                document.getElementById("teamBInput")
-                    .value = m.teamB || "";
-
-            }
-
-        }
-
-
-        /* TIMEOUT */
-
-        if (data.timeout) {
-
-            timeoutEndAt =
-                data.timeout.endAt || null;
-
-            timeoutTeam =
-                data.timeout.team || null;
-
-        }
-
-
-        /* RECORDS */
-
-        recordsData =
-            data.records || {};
-
-        displayRecords();
-
     },
+
     function(error) {
 
-        console.log("Firebase read error:", error);
+        console.log(
+            "Firebase error:",
+            error
+        );
 
     }
+
 );
 
 
@@ -790,13 +475,15 @@ onValue(
    SCORE
 ========================= */
 
-window.changeScore = function(team, value) {
+window.changeScore =
+function(team, value) {
 
     if (!isAdmin) {
 
         alert("Admin PIN required!");
 
         return;
+
     }
 
 
@@ -804,8 +491,11 @@ window.changeScore = function(team, value) {
 
         scoreA += value;
 
+
         if (scoreA < 0) {
+
             scoreA = 0;
+
         }
 
     }
@@ -815,30 +505,37 @@ window.changeScore = function(team, value) {
 
         scoreB += value;
 
+
         if (scoreB < 0) {
+
             scoreB = 0;
+
         }
 
     }
 
 
-    /* SCREEN UPDATE IMMEDIATELY */
+    /* SCREEN */
 
     document.getElementById("scoreA")
         .innerText = scoreA;
+
 
     document.getElementById("scoreB")
         .innerText = scoreB;
 
 
-    /* FIREBASE SAVE */
+    /* FIREBASE */
 
     set(
+
         ref(db, "score"),
+
         {
             A: scoreA,
             B: scoreB
         }
+
     )
     .then(function() {
 
@@ -854,39 +551,7 @@ window.changeScore = function(team, value) {
 
     });
 
-
-    if (value > 0) {
-
-        playGoalSound();
-
-    }
-
 };
-
-
-/* =========================
-   GOAL SOUND
-========================= */
-
-function playGoalSound() {
-
-    try {
-
-        const audio =
-            new Audio(
-                "https://actions.google.com/sounds/v1/alarms/beep_short.ogg"
-            );
-
-        audio.play();
-
-    }
-    catch(e) {
-
-        console.log(e);
-
-    }
-
-}
 
 
 /* =========================
@@ -895,17 +560,27 @@ function playGoalSound() {
 
 function updateTimerDisplay() {
 
-    let seconds = totalSeconds;
+    let seconds =
+        totalSeconds;
 
 
-    if (timerRunning && timerEndAt) {
+    if (
+        timerRunning &&
+        timerEndAt
+    ) {
 
         seconds =
             Math.max(
+
                 0,
+
                 Math.ceil(
-                    (timerEndAt - Date.now()) / 1000
+
+                    (timerEndAt - Date.now())
+                    / 1000
+
                 )
+
             );
 
     }
@@ -914,18 +589,17 @@ function updateTimerDisplay() {
     const minutes =
         Math.floor(seconds / 60);
 
+
     const sec =
         seconds % 60;
 
 
-    const text =
+    document.getElementById("timer")
+        .innerText =
+
         minutes +
         ":" +
         String(sec).padStart(2, "0");
-
-
-    document.getElementById("timer")
-        .innerText = text;
 
 
     if (
@@ -934,7 +608,9 @@ function updateTimerDisplay() {
     ) {
 
         timerRunning = false;
+
         timerEndAt = null;
+
         totalSeconds = 0;
 
     }
@@ -946,34 +622,39 @@ function updateTimerDisplay() {
    TIMER LOOP
 ========================= */
 
-displayInterval =
 setInterval(
+
     function() {
 
         updateTimerDisplay();
-        updateTimeoutDisplay();
 
     },
+
     250
+
 );
 
 
 /* =========================
-   START TIMER
+   START
 ========================= */
 
-window.startTimer = function() {
+window.startTimer =
+function() {
 
     if (!isAdmin) {
 
         alert("Admin PIN required!");
 
         return;
+
     }
 
 
     if (timerRunning) {
+
         return;
+
     }
 
 
@@ -988,21 +669,25 @@ window.startTimer = function() {
         Date.now() +
         (totalSeconds * 1000);
 
+
     timerRunning = true;
 
 
     set(
+
         ref(db, "timer"),
+
         {
             time: totalSeconds,
             running: true,
             endAt: timerEndAt
         }
+
     )
     .catch(function(error) {
 
         alert(
-            "Timer save error: " +
+            "Timer error: " +
             error.message
         );
 
@@ -1012,49 +697,63 @@ window.startTimer = function() {
 
 
 /* =========================
-   STOP TIMER
+   STOP
 ========================= */
 
-window.stopTimer = function() {
+window.stopTimer =
+function() {
 
     if (!isAdmin) {
 
         alert("Admin PIN required!");
 
         return;
+
     }
 
 
     if (!timerRunning) {
+
         return;
+
     }
 
 
     totalSeconds =
         Math.max(
+
             0,
+
             Math.ceil(
-                (timerEndAt - Date.now()) / 1000
+
+                (timerEndAt - Date.now())
+                / 1000
+
             )
+
         );
 
 
     timerRunning = false;
+
     timerEndAt = null;
 
 
     set(
+
         ref(db, "timer"),
+
         {
             time: totalSeconds,
             running: false,
             endAt: null
         }
+
     )
     .catch(function(error) {
 
         alert(
-            "Timer save error: " +
+            "Timer error: " +
             error.message
         );
 
@@ -1067,19 +766,23 @@ window.stopTimer = function() {
    RESET TIMER
 ========================= */
 
-window.resetTimer = function() {
+window.resetTimer =
+function() {
 
     if (!isAdmin) {
 
         alert("Admin PIN required!");
 
         return;
+
     }
 
 
-    timerRunning = false;
-    timerEndAt = null;
     totalSeconds = 1200;
+
+    timerRunning = false;
+
+    timerEndAt = null;
 
 
     document.getElementById("timer")
@@ -1087,474 +790,20 @@ window.resetTimer = function() {
 
 
     set(
+
         ref(db, "timer"),
+
         {
             time: 1200,
             running: false,
             endAt: null
         }
+
     )
     .catch(function(error) {
 
         alert(
             "Timer reset error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =========================
-   MATCH SETTINGS
-========================= */
-
-window.saveMatchSettings = function() {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-    }
-
-
-    const title =
-        document.getElementById("titleInput").value ||
-        "U-17 BOYS SGFI STATE";
-
-
-    const matchNo =
-        document.getElementById("matchNoInput").value ||
-        1;
-
-
-    const date =
-        document.getElementById("dateInput").value ||
-        "-";
-
-
-    const teamA =
-        document.getElementById("teamAInput").value ||
-        "AMDAVAD CITY";
-
-
-    const teamB =
-        document.getElementById("teamBInput").value ||
-        "KHEDA";
-
-
-    set(
-        ref(db, "match"),
-        {
-            title: title,
-            matchNo: matchNo,
-            date: date,
-            teamA: teamA,
-            teamB: teamB
-        }
-    )
-    .then(function() {
-
-        alert("Team / Match Saved Successfully!");
-
-    })
-    .catch(function(error) {
-
-        alert(
-            "Match save error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =========================
-   TIMEOUT
-========================= */
-
-window.startTimeout = function(team) {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-    }
-
-
-    timeoutTeam = team;
-
-    timeoutEndAt =
-        Date.now() + 60000;
-
-
-    set(
-        ref(db, "timeout"),
-        {
-            team: team,
-            endAt: timeoutEndAt
-        }
-    )
-    .catch(function(error) {
-
-        alert(
-            "Timeout save error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =========================
-   TIMEOUT DISPLAY
-========================= */
-
-function updateTimeoutDisplay() {
-
-    const el =
-        document.getElementById("timeoutDisplay");
-
-
-    if (!timeoutEndAt) {
-
-        el.innerText = "";
-
-        return;
-    }
-
-
-    const remaining =
-        Math.max(
-            0,
-            Math.ceil(
-                (timeoutEndAt - Date.now()) / 1000
-            )
-        );
-
-
-    if (remaining <= 0) {
-
-        el.innerText = "";
-
-        timeoutEndAt = null;
-        timeoutTeam = null;
-
-        return;
-    }
-
-
-    const teamName =
-        timeoutTeam === "A"
-        ? document.getElementById("teamAName").innerText
-        : document.getElementById("teamBName").innerText;
-
-
-    el.innerText =
-        teamName +
-        " TIMEOUT : " +
-        remaining +
-        " sec";
-
-}
-
-
-/* =========================
-   PLAYER CARDS
-========================= */
-
-window.giveCard = function(type) {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-    }
-
-
-    const team =
-        document.getElementById("cardTeam").value;
-
-
-    const player =
-        document.getElementById("playerName")
-        .value
-        .trim();
-
-
-    if (!player) {
-
-        alert("Enter Player Name / Number");
-
-        return;
-    }
-
-
-    const teamName =
-        team === "A"
-        ? document.getElementById("teamAName").innerText
-        : document.getElementById("teamBName").innerText;
-
-
-    let cardText = "";
-
-
-    if (type === "yellow") {
-
-        cardText = "🟨 Yellow Card";
-
-    }
-    else if (type === "twoMin") {
-
-        cardText = "🔵 2 Minute Suspension";
-
-    }
-    else if (type === "red") {
-
-        cardText = "🟥 Red Card";
-
-    }
-
-
-    const newRecord =
-        push(ref(db, "records"));
-
-
-    set(
-        newRecord,
-        {
-            team: team,
-            teamName: teamName,
-            player: player,
-            type: type,
-            text: cardText,
-            time: new Date().toLocaleTimeString()
-        }
-    )
-    .then(function() {
-
-        alert(
-            cardText +
-            " saved successfully"
-        );
-
-        document.getElementById("playerName")
-            .value = "";
-
-    })
-    .catch(function(error) {
-
-        alert(
-            "Card save error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =========================
-   RECORD DISPLAY
-========================= */
-
-function displayRecords() {
-
-    const box =
-        document.getElementById("records");
-
-
-    box.innerHTML = "";
-
-
-    Object.values(recordsData)
-        .forEach(function(record) {
-
-            const div =
-                document.createElement("div");
-
-
-            div.className = "record";
-
-
-            div.innerText =
-                (record.teamName || record.team || "") +
-                " | Player: " +
-                (record.player || "") +
-                " | " +
-                (record.text || "") +
-                " | " +
-                (record.time || "");
-
-
-            box.appendChild(div);
-
-        });
-
-}
-
-
-/* =========================
-   SAVE FINAL RESULT
-========================= */
-
-window.saveFinalResult = function() {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-    }
-
-
-    const teamA =
-        document.getElementById("teamAName")
-        .innerText;
-
-
-    const teamB =
-        document.getElementById("teamBName")
-        .innerText;
-
-
-    const result =
-        push(ref(db, "matchResults"));
-
-
-    set(
-        result,
-        {
-            matchNo:
-                document.getElementById(
-                    "matchNoDisplay"
-                ).innerText,
-
-            date:
-                document.getElementById(
-                    "dateDisplay"
-                ).innerText,
-
-            teamA: teamA,
-            teamB: teamB,
-
-            scoreA: scoreA,
-            scoreB: scoreB,
-
-            savedAt:
-                new Date()
-                .toLocaleString()
-        }
-    )
-    .then(function() {
-
-        alert(
-            "Final Result Saved Successfully!"
-        );
-
-    })
-    .catch(function(error) {
-
-        alert(
-            "Result save error: " +
-            error.message
-        );
-
-    });
-
-};
-
-
-/* =========================
-   RESET COMPLETE MATCH
-========================= */
-
-window.resetMatch = function() {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-    }
-
-
-    if (
-        !confirm(
-            "Reset complete match?"
-        )
-    ) {
-
-        return;
-    }
-
-
-    scoreA = 0;
-    scoreB = 0;
-
-    totalSeconds = 1200;
-
-    timerRunning = false;
-    timerEndAt = null;
-
-    timeoutEndAt = null;
-    timeoutTeam = null;
-
-    recordsData = {};
-
-
-    document.getElementById("scoreA")
-        .innerText = "0";
-
-    document.getElementById("scoreB")
-        .innerText = "0";
-
-    document.getElementById("timer")
-        .innerText = "20:00";
-
-    document.getElementById("records")
-        .innerHTML = "";
-
-
-    set(
-        ref(db),
-        {
-            score: {
-                A: 0,
-                B: 0
-            },
-
-            timer: {
-                time: 1200,
-                running: false,
-                endAt: null
-            },
-
-            timeout: {
-                team: null,
-                endAt: null
-            },
-
-            records: {}
-        }
-    )
-    .then(function() {
-
-        alert(
-            "Match Reset Successfully!"
-        );
-
-    })
-    .catch(function(error) {
-
-        alert(
-            "Reset error: " +
             error.message
         );
 
