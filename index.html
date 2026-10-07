@@ -111,6 +111,29 @@ button {
     margin: 10px;
 }
 
+/* TEAM NAME SETTINGS */
+
+.team-settings {
+    display: none;
+    margin-top: 30px;
+    padding: 15px;
+}
+
+.team-input {
+    width: 250px;
+    padding: 12px;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+}
+
+.save-names {
+    background: #00aaff;
+    color: white;
+}
+
 @media(max-width:700px) {
 
     h1 {
@@ -138,6 +161,11 @@ button {
         padding: 10px 12px;
     }
 
+    .team-input {
+        width: 90%;
+        max-width: 300px;
+    }
+
 }
 
 </style>
@@ -150,6 +178,7 @@ button {
 
 <h1>HANDBALL SCOREBOARD</h1>
 
+
 <!-- ADMIN -->
 
 <button class="admin-btn" onclick="openAdmin()">
@@ -160,9 +189,11 @@ ADMIN
 Viewing Mode
 </div>
 
+
 <!-- SCOREBOARD -->
 
 <div class="scoreboard">
+
 
 <!-- TEAM A -->
 
@@ -191,6 +222,7 @@ onclick="changeScore('A',-1)">
 </div>
 
 </div>
+
 
 <!-- TIME -->
 
@@ -223,6 +255,7 @@ RESET
 
 </div>
 
+
 <!-- TEAM B -->
 
 <div class="team">
@@ -253,7 +286,34 @@ onclick="changeScore('B',-1)">
 
 </div>
 
+
+<!-- TEAM NAME SETTINGS -->
+
+<div class="team-settings" id="teamSettings">
+
+<input
+id="teamAInput"
+class="team-input"
+placeholder="TEAM A NAME">
+
+<input
+id="teamBInput"
+class="team-input"
+placeholder="TEAM B NAME">
+
+<br>
+
+<button
+class="save-names"
+onclick="saveTeamNames()">
+SAVE TEAM NAMES
+</button>
+
 </div>
+
+
+</div>
+
 
 <script type="module">
 
@@ -340,6 +400,25 @@ window.openAdmin = function() {
         document.querySelector(".admin-btn")
             .innerText = "EXIT ADMIN";
 
+
+        /* SHOW TEAM SETTINGS */
+
+        document.getElementById("teamSettings")
+            .style.display = "block";
+
+
+        /* PUT CURRENT NAMES IN BOXES */
+
+        document.getElementById("teamAInput")
+            .value =
+            document.getElementById("teamAName")
+            .innerText;
+
+        document.getElementById("teamBInput")
+            .value =
+            document.getElementById("teamBName")
+            .innerText;
+
     }
 
     else {
@@ -371,6 +450,9 @@ function logoutAdmin() {
             element.style.display = "none";
 
         });
+
+    document.getElementById("teamSettings")
+        .style.display = "none";
 
     document.querySelector(".admin-btn")
         .innerText = "ADMIN";
@@ -434,6 +516,27 @@ onValue(
 
         }
 
+
+        /* TEAM NAMES */
+
+        if (data.teams) {
+
+            if (data.teams.A) {
+
+                document.getElementById("teamAName")
+                    .innerText = data.teams.A;
+
+            }
+
+            if (data.teams.B) {
+
+                document.getElementById("teamBName")
+                    .innerText = data.teams.B;
+
+            }
+
+        }
+
     },
 
     function(error) {
@@ -446,6 +549,86 @@ onValue(
     }
 
 );
+
+
+/* =========================
+   SAVE TEAM NAMES
+========================= */
+
+window.saveTeamNames = function() {
+
+    if (!isAdmin) {
+
+        alert("Admin PIN required!");
+
+        return;
+
+    }
+
+
+    let teamA =
+        document.getElementById("teamAInput")
+        .value.trim();
+
+    let teamB =
+        document.getElementById("teamBInput")
+        .value.trim();
+
+
+    if (teamA === "") {
+
+        alert("Enter Team A Name");
+
+        return;
+
+    }
+
+
+    if (teamB === "") {
+
+        alert("Enter Team B Name");
+
+        return;
+
+    }
+
+
+    /* SCREEN */
+
+    document.getElementById("teamAName")
+        .innerText = teamA;
+
+    document.getElementById("teamBName")
+        .innerText = teamB;
+
+
+    /* FIREBASE */
+
+    set(
+
+        ref(db, "teams"),
+
+        {
+            A: teamA,
+            B: teamB
+        }
+
+    )
+    .then(function() {
+
+        alert("Team names saved successfully");
+
+    })
+    .catch(function(error) {
+
+        alert(
+            "Team name save error: " +
+            error.message
+        );
+
+    });
+
+};
 
 
 /* =========================
@@ -490,16 +673,12 @@ function(team, value) {
     }
 
 
-    /* SCREEN */
-
     document.getElementById("scoreA")
         .innerText = scoreA;
 
     document.getElementById("scoreB")
         .innerText = scoreB;
 
-
-    /* FIREBASE */
 
     set(
 
@@ -511,11 +690,6 @@ function(team, value) {
         }
 
     )
-    .then(function() {
-
-        console.log("Score saved");
-
-    })
     .catch(function(error) {
 
         alert(
@@ -785,11 +959,6 @@ function() {
         }
 
     )
-    .then(function() {
-
-        console.log("Score reset successfully");
-
-    })
     .catch(function(error) {
 
         alert(
@@ -813,11 +982,6 @@ function() {
         }
 
     )
-    .then(function() {
-
-        console.log("Timer reset successfully");
-
-    })
     .catch(function(error) {
 
         alert(
