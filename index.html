@@ -609,6 +609,45 @@ let timeoutTeam = null;
 let recordsData = {};
 
 const ADMIN_PIN = "1516";
+    /* =========================
+   PLAYER CARDS
+========================= */
+
+window.giveCard = function(type) {
+
+    const team = document.getElementById("cardTeam").value;
+    const player = document.getElementById("playerName").value.trim();
+
+    if (!player) {
+        alert("Enter Player Name / Number");
+        return;
+    }
+
+    let cardText = "";
+
+    if (type === "yellow") {
+        cardText = "🟨 Yellow Card";
+    } 
+    else if (type === "twoMin") {
+        cardText = "🔵 2 Minute Suspension";
+    } 
+    else if (type === "red") {
+        cardText = "🟥 Red Card";
+    }
+
+    const newRecord = push(ref(db, "records"));
+
+    set(newRecord, {
+        team: team,
+        teamName: team,
+        player: player,
+        type: type,
+        text: cardText,
+        time: new Date().toLocaleTimeString()
+    });
+
+    alert(cardText + " saved");
+};
 
 
 /* =========================
