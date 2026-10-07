@@ -130,17 +130,14 @@ button {
     display: none;
 }
 
-input, select {
+input,
+select {
     padding: 10px;
     font-size: 17px;
     border-radius: 6px;
     border: none;
     margin: 4px;
     text-align: center;
-}
-
-.admin-box {
-    margin-top: 15px;
 }
 
 .admin-section {
@@ -183,11 +180,6 @@ input, select {
     font-size: 22px;
 }
 
-.suspension {
-    color: #00bfff;
-    font-size: 20px;
-}
-
 .status {
     margin: 8px;
     font-size: 18px;
@@ -220,7 +212,8 @@ input, select {
         padding: 10px 12px;
     }
 
-    input, select {
+    input,
+    select {
         width: 90%;
     }
 }
@@ -234,9 +227,13 @@ input, select {
 <h1 id="titleText">U-17 BOYS SGFI STATE</h1>
 
 <div class="match-info">
-    Match No: <span id="matchNoDisplay">1</span>
+    Match No:
+    <span id="matchNoDisplay">1</span>
+
     &nbsp; | &nbsp;
-    Date: <span id="dateDisplay">-</span>
+
+    Date:
+    <span id="dateDisplay">-</span>
 </div>
 
 <div id="adminPanel">
@@ -252,7 +249,9 @@ input, select {
 </div>
 
 
-<!-- SCOREBOARD -->
+<!-- =========================
+     SCOREBOARD
+========================= -->
 
 <div class="scoreboard">
 
@@ -356,7 +355,9 @@ input, select {
 </div>
 
 
-<!-- ADMIN CONTROL PANEL -->
+<!-- =========================
+     ADMIN CONTROL PANEL
+========================= -->
 
 <div class="admin-section" id="controlPanel">
 
@@ -426,7 +427,7 @@ input, select {
     </div>
 
 
-    <!-- DISCIPLINE -->
+    <!-- PLAYER CARDS -->
 
     <div class="panel">
 
@@ -435,8 +436,15 @@ input, select {
         </div>
 
         <select id="cardTeam">
-            <option value="A">TEAM A</option>
-            <option value="B">TEAM B</option>
+
+            <option value="A">
+                TEAM A
+            </option>
+
+            <option value="B">
+                TEAM B
+            </option>
+
         </select>
 
         <input id="playerName"
@@ -462,7 +470,7 @@ input, select {
     </div>
 
 
-    <!-- RECORDS -->
+    <!-- MATCH RECORD -->
 
     <div class="panel">
 
@@ -502,7 +510,9 @@ input, select {
 </div>
 
 
-<!-- FIREBASE -->
+<!-- =========================
+     FIREBASE
+========================= -->
 
 <script type="module">
 
@@ -525,13 +535,14 @@ import {
 
 const firebaseConfig = {
 
-    apiKey: "AIzaSyDdQaZ2rzJYgw-YKbchs06e2GrviPS9O4o",
+    apiKey:
+    "AIzaSyDdQaZ2rzJYgw-YKbchs06e2GrviPS9O4o",
 
     authDomain:
     "tejash-4a29b.firebaseapp.com",
 
     databaseURL:
-     "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com",
+    "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com",
 
     projectId:
     "tejash-4a29b",
@@ -547,44 +558,11 @@ const firebaseConfig = {
 };
 
 
-const app = initializeApp(firebaseConfig);
+const app =
+    initializeApp(firebaseConfig);
 
-const db = getDatabase(app);
-    window.giveCard = function(type) {
-
-    const team = document.getElementById("cardTeam").value;
-    const player = document.getElementById("playerName").value.trim();
-
-    if (!player) {
-        alert("Enter Player Name / Number");
-        return;
-    }
-
-    let cardText = "";
-
-    if (type === "yellow") {
-        cardText = "🟨 Yellow Card";
-    } 
-    else if (type === "twoMin") {
-        cardText = "🔵 2 Minute Suspension";
-    } 
-    else if (type === "red") {
-        cardText = "🟥 Red Card";
-    }
-
-    const newRecord = push(ref(db, "records"));
-
-    set(newRecord, {
-        team: team,
-        teamName: team,
-        player: player,
-        type: type,
-        text: cardText,
-        time: new Date().toLocaleTimeString()
-    });
-
-    alert(cardText + " saved");
-};
+const db =
+    getDatabase(app);
 
 
 /* =========================
@@ -609,45 +587,6 @@ let timeoutTeam = null;
 let recordsData = {};
 
 const ADMIN_PIN = "1516";
-    /* =========================
-   PLAYER CARDS
-========================= */
-
-window.giveCard = function(type) {
-
-    const team = document.getElementById("cardTeam").value;
-    const player = document.getElementById("playerName").value.trim();
-
-    if (!player) {
-        alert("Enter Player Name / Number");
-        return;
-    }
-
-    let cardText = "";
-
-    if (type === "yellow") {
-        cardText = "🟨 Yellow Card";
-    } 
-    else if (type === "twoMin") {
-        cardText = "🔵 2 Minute Suspension";
-    } 
-    else if (type === "red") {
-        cardText = "🟥 Red Card";
-    }
-
-    const newRecord = push(ref(db, "records"));
-
-    set(newRecord, {
-        team: team,
-        teamName: team,
-        player: player,
-        type: type,
-        text: cardText,
-        time: new Date().toLocaleTimeString()
-    });
-
-    alert(cardText + " saved");
-};
 
 
 /* =========================
@@ -663,7 +602,8 @@ window.openAdmin = function() {
         return;
     }
 
-    const pin = prompt("Enter Admin PIN");
+    const pin =
+        prompt("Enter Admin PIN");
 
     if (pin === ADMIN_PIN) {
 
@@ -676,7 +616,11 @@ window.openAdmin = function() {
             .style.color = "lightgreen";
 
         document.querySelectorAll(".control")
-            .forEach(x => x.style.display = "block");
+            .forEach(function(x) {
+
+                x.style.display = "block";
+
+            });
 
         document.getElementById("controlPanel")
             .style.display = "block";
@@ -684,7 +628,8 @@ window.openAdmin = function() {
         document.querySelector(".admin-btn")
             .innerText = "EXIT ADMIN";
 
-    } else {
+    }
+    else {
 
         alert("Wrong PIN!");
 
@@ -704,13 +649,18 @@ function logoutAdmin() {
         .style.color = "yellow";
 
     document.querySelectorAll(".control")
-        .forEach(x => x.style.display = "none");
+        .forEach(function(x) {
+
+            x.style.display = "none";
+
+        });
 
     document.getElementById("controlPanel")
         .style.display = "none";
 
     document.querySelector(".admin-btn")
         .innerText = "ADMIN";
+
 }
 
 
@@ -718,110 +668,133 @@ function logoutAdmin() {
    LIVE DATABASE
 ========================= */
 
-onValue(ref(db), function(snapshot) {
+onValue(
+    ref(db),
+    function(snapshot) {
 
-    const data = snapshot.val();
+        const data =
+            snapshot.val();
 
-    if (!data) return;
-
-
-    /* SCORE */
-
-    if (data.score) {
-
-        scoreA = data.score.A || 0;
-        scoreB = data.score.B || 0;
-
-        document.getElementById("scoreA")
-            .innerText = scoreA;
-
-        document.getElementById("scoreB")
-            .innerText = scoreB;
-    }
-
-
-    /* TIMER */
-
-    if (data.timer) {
-
-        totalSeconds =
-            data.timer.time ?? 1200;
-
-        timerRunning =
-            data.timer.running || false;
-
-        timerEndAt =
-            data.timer.endAt || null;
-    }
-
-
-    /* MATCH */
-
-    if (data.match) {
-
-        const m = data.match;
-
-        document.getElementById("titleText")
-            .innerText =
-            m.title || "U-17 BOYS SGFI STATE";
-
-        document.getElementById("matchNoDisplay")
-            .innerText =
-            m.matchNo || 1;
-
-        document.getElementById("dateDisplay")
-            .innerText =
-            m.date || "-";
-
-        document.getElementById("teamAName")
-            .innerText =
-            m.teamA || "AMDAVAD CITY";
-
-        document.getElementById("teamBName")
-            .innerText =
-            m.teamB || "KHEDA";
-
-        if (isAdmin) {
-
-            document.getElementById("titleInput")
-                .value = m.title || "";
-
-            document.getElementById("matchNoInput")
-                .value = m.matchNo || 1;
-
-            document.getElementById("dateInput")
-                .value = m.date || "";
-
-            document.getElementById("teamAInput")
-                .value = m.teamA || "";
-
-            document.getElementById("teamBInput")
-                .value = m.teamB || "";
+        if (!data) {
+            return;
         }
+
+
+        /* SCORE */
+
+        if (data.score) {
+
+            scoreA =
+                data.score.A || 0;
+
+            scoreB =
+                data.score.B || 0;
+
+            document.getElementById("scoreA")
+                .innerText = scoreA;
+
+            document.getElementById("scoreB")
+                .innerText = scoreB;
+
+        }
+
+
+        /* TIMER */
+
+        if (data.timer) {
+
+            totalSeconds =
+                data.timer.time ?? 1200;
+
+            timerRunning =
+                data.timer.running || false;
+
+            timerEndAt =
+                data.timer.endAt || null;
+
+        }
+
+
+        /* MATCH */
+
+        if (data.match) {
+
+            const m =
+                data.match;
+
+            document.getElementById("titleText")
+                .innerText =
+                m.title ||
+                "U-17 BOYS SGFI STATE";
+
+            document.getElementById("matchNoDisplay")
+                .innerText =
+                m.matchNo || 1;
+
+            document.getElementById("dateDisplay")
+                .innerText =
+                m.date || "-";
+
+            document.getElementById("teamAName")
+                .innerText =
+                m.teamA ||
+                "AMDAVAD CITY";
+
+            document.getElementById("teamBName")
+                .innerText =
+                m.teamB ||
+                "KHEDA";
+
+
+            if (isAdmin) {
+
+                document.getElementById("titleInput")
+                    .value =
+                    m.title || "";
+
+                document.getElementById("matchNoInput")
+                    .value =
+                    m.matchNo || 1;
+
+                document.getElementById("dateInput")
+                    .value =
+                    m.date || "";
+
+                document.getElementById("teamAInput")
+                    .value =
+                    m.teamA || "";
+
+                document.getElementById("teamBInput")
+                    .value =
+                    m.teamB || "";
+
+            }
+
+        }
+
+
+        /* TIMEOUT */
+
+        if (data.timeout) {
+
+            timeoutEndAt =
+                data.timeout.endAt || null;
+
+            timeoutTeam =
+                data.timeout.team || null;
+
+        }
+
+
+        /* RECORDS */
+
+        recordsData =
+            data.records || {};
+
+        displayRecords();
+
     }
-
-
-    /* TIMEOUT */
-
-    if (data.timeout) {
-
-        timeoutEndAt =
-            data.timeout.endAt || null;
-
-        timeoutTeam =
-            data.timeout.team || null;
-
-    }
-
-
-    /* RECORDS */
-
-    recordsData =
-        data.records || {};
-
-    displayRecords();
-
-});
+);
 
 
 /* =========================
@@ -843,8 +816,10 @@ function(team, value) {
 
         scoreA += value;
 
-        if (scoreA < 0)
+        if (scoreA < 0) {
             scoreA = 0;
+        }
+
     }
 
 
@@ -852,20 +827,21 @@ function(team, value) {
 
         scoreB += value;
 
-        if (scoreB < 0)
+        if (scoreB < 0) {
             scoreB = 0;
+        }
+
     }
 
 
-    set(ref(db, "score"), {
+    set(
+        ref(db, "score"),
+        {
+            A: scoreA,
+            B: scoreB
+        }
+    );
 
-        A: scoreA,
-        B: scoreB
-
-    });
-
-
-    /* GOAL SOUND */
 
     if (value > 0) {
 
@@ -891,7 +867,8 @@ function playGoalSound() {
 
         audio.play();
 
-    } catch(e) {
+    }
+    catch(e) {
 
         console.log(e);
 
@@ -906,7 +883,9 @@ function playGoalSound() {
 
 function updateTimerDisplay() {
 
-    let seconds = totalSeconds;
+    let seconds =
+        totalSeconds;
+
 
     if (timerRunning && timerEndAt) {
 
@@ -921,14 +900,16 @@ function updateTimerDisplay() {
     }
 
 
-    let minutes =
+    const minutes =
         Math.floor(seconds / 60);
 
-    let sec =
+    const sec =
         seconds % 60;
 
-    let text =
-        minutes + ":" +
+
+    const text =
+        minutes +
+        ":" +
         String(sec).padStart(2, "0");
 
 
@@ -936,7 +917,10 @@ function updateTimerDisplay() {
         .innerText = text;
 
 
-    if (timerRunning && seconds <= 0) {
+    if (
+        timerRunning &&
+        seconds <= 0
+    ) {
 
         timerRunning = false;
 
@@ -954,13 +938,16 @@ function updateTimerDisplay() {
 ========================= */
 
 displayInterval =
-setInterval(function() {
+setInterval(
+    function() {
 
-    updateTimerDisplay();
+        updateTimerDisplay();
 
-    updateTimeoutDisplay();
+        updateTimeoutDisplay();
 
-}, 250);
+    },
+    250
+);
 
 
 /* =========================
@@ -978,12 +965,16 @@ function() {
     }
 
 
-    if (timerRunning)
+    if (timerRunning) {
         return;
+    }
 
 
-    if (totalSeconds <= 0)
+    if (totalSeconds <= 0) {
+
         totalSeconds = 1200;
+
+    }
 
 
     timerEndAt =
@@ -993,15 +984,14 @@ function() {
     timerRunning = true;
 
 
-    set(ref(db, "timer"), {
-
-        time: totalSeconds,
-
-        running: true,
-
-        endAt: timerEndAt
-
-    });
+    set(
+        ref(db, "timer"),
+        {
+            time: totalSeconds,
+            running: true,
+            endAt: timerEndAt
+        }
+    );
 
 };
 
@@ -1021,8 +1011,9 @@ function() {
     }
 
 
-    if (!timerRunning)
+    if (!timerRunning) {
         return;
+    }
 
 
     totalSeconds =
@@ -1039,15 +1030,14 @@ function() {
     timerEndAt = null;
 
 
-    set(ref(db, "timer"), {
-
-        time: totalSeconds,
-
-        running: false,
-
-        endAt: null
-
-    });
+    set(
+        ref(db, "timer"),
+        {
+            time: totalSeconds,
+            running: false,
+            endAt: null
+        }
+    );
 
 };
 
@@ -1074,15 +1064,14 @@ function() {
     totalSeconds = 1200;
 
 
-    set(ref(db, "timer"), {
-
-        time: 1200,
-
-        running: false,
-
-        endAt: null
-
-    });
+    set(
+        ref(db, "timer"),
+        {
+            time: 1200,
+            running: false,
+            endAt: null
+        }
+    );
 
 };
 
@@ -1103,43 +1092,40 @@ function() {
 
 
     const title =
-        document.getElementById("titleInput").value
-        || "U-17 BOYS SGFI STATE";
+        document.getElementById("titleInput").value ||
+        "U-17 BOYS SGFI STATE";
 
 
     const matchNo =
-        document.getElementById("matchNoInput").value
-        || 1;
+        document.getElementById("matchNoInput").value ||
+        1;
 
 
     const date =
-        document.getElementById("dateInput").value
-        || "-";
+        document.getElementById("dateInput").value ||
+        "-";
 
 
     const teamA =
-        document.getElementById("teamAInput").value
-        || "AMDAVAD CITY";
+        document.getElementById("teamAInput").value ||
+        "AMDAVAD CITY";
 
 
     const teamB =
-        document.getElementById("teamBInput").value
-        || "KHEDA";
+        document.getElementById("teamBInput").value ||
+        "KHEDA";
 
 
-    set(ref(db, "match"), {
-
-        title: title,
-
-        matchNo: matchNo,
-
-        date: date,
-
-        teamA: teamA,
-
-        teamB: teamB
-
-    });
+    set(
+        ref(db, "match"),
+        {
+            title: title,
+            matchNo: matchNo,
+            date: date,
+            teamA: teamA,
+            teamB: teamB
+        }
+    );
 
 };
 
@@ -1165,13 +1151,13 @@ function(team) {
         Date.now() + 60000;
 
 
-    set(ref(db, "timeout"), {
-
-        team: team,
-
-        endAt: timeoutEndAt
-
-    });
+    set(
+        ref(db, "timeout"),
+        {
+            team: team,
+            endAt: timeoutEndAt
+        }
+    );
 
 };
 
@@ -1184,6 +1170,7 @@ function updateTimeoutDisplay() {
 
     const el =
         document.getElementById("timeoutDisplay");
+
 
     if (!timeoutEndAt) {
 
@@ -1249,7 +1236,9 @@ function(type) {
 
 
     const player =
-        document.getElementById("playerName").value.trim();
+        document.getElementById("playerName")
+        .value
+        .trim();
 
 
     if (!player) {
@@ -1266,44 +1255,78 @@ function(type) {
         : document.getElementById("teamBName").innerText;
 
 
+    let cardText = "";
+
+
+    if (type === "yellow") {
+
+        cardText =
+            "🟨 Yellow Card";
+
+    }
+
+
+    else if (type === "twoMin") {
+
+        cardText =
+            "🔵 2 Minute Suspension";
+
+    }
+
+
+    else if (type === "red") {
+
+        cardText =
+            "🟥 Red Card";
+
+    }
+
+
     const newRecord =
         push(ref(db, "records"));
 
 
-    let cardText = "";
+    set(
+        newRecord,
+        {
+            team: team,
 
+            teamName: teamName,
 
-    if (type === "yellow")
-        cardText = "🟨 Yellow Card";
+            player: player,
 
+            type: type,
 
-    if (type === "twoMin")
-        cardText = "🔵 2 Minute Suspension";
+            text: cardText,
 
+            time:
+                new Date()
+                .toLocaleTimeString()
+        }
+    )
+    .then(
+        function() {
 
-    if (type === "red")
-        cardText = "🟥 Red Card";
+            alert(
+                cardText +
+                " saved successfully"
+            );
 
+            document.getElementById("playerName")
+                .value = "";
 
-    set(newRecord, {
+        }
+    )
+    .catch(
+        function(error) {
 
-        team: team,
+            alert(
+                "Card save error: " +
+                error.message
+            );
 
-       teamName: team,
-
-        player: player,
-
-        type: type,
-
-        text: cardText,
-
-        time: new Date().toLocaleTimeString()
-
-    });
-
-
-    document.getElementById("playerName")
-        .value = "";
+        }
+    );
 
 };
 
@@ -1321,28 +1344,32 @@ function displayRecords() {
     box.innerHTML = "";
 
 
-    Object.values(recordsData).forEach(function(record) {
+    Object.values(recordsData)
+        .forEach(
+            function(record) {
 
-        const div =
-            document.createElement("div");
-
-
-        div.className = "record";
-
-
-        div.innerText =
-            record.teamName +
-            " | Player: " +
-            record.player +
-            " | " +
-            record.text +
-            " | " +
-            record.time;
+                const div =
+                    document.createElement("div");
 
 
-        box.appendChild(div);
+                div.className =
+                    "record";
 
-    });
+
+                div.innerText =
+                    record.teamName +
+                    " | Player: " +
+                    record.player +
+                    " | " +
+                    record.text +
+                    " | " +
+                    record.time;
+
+
+                box.appendChild(div);
+
+            }
+        );
 
 }
 
@@ -1363,40 +1390,64 @@ function() {
 
 
     const teamA =
-        document.getElementById("teamAName").innerText;
+        document.getElementById("teamAName")
+        .innerText;
 
 
     const teamB =
-        document.getElementById("teamBName").innerText;
+        document.getElementById("teamBName")
+        .innerText;
 
 
     const result =
         push(ref(db, "matchResults"));
 
 
-    set(result, {
+    set(
+        result,
+        {
+            matchNo:
+                document.getElementById(
+                    "matchNoDisplay"
+                ).innerText,
 
-        matchNo:
-            document.getElementById("matchNoDisplay").innerText,
+            date:
+                document.getElementById(
+                    "dateDisplay"
+                ).innerText,
 
-        date:
-            document.getElementById("dateDisplay").innerText,
+            teamA: teamA,
 
-        teamA: teamA,
+            teamB: teamB,
 
-        teamB: teamB,
+            scoreA: scoreA,
 
-        scoreA: scoreA,
+            scoreB: scoreB,
 
-        scoreB: scoreB,
+            savedAt:
+                new Date()
+                .toLocaleString()
+        }
+    )
+    .then(
+        function() {
 
-        savedAt:
-            new Date().toLocaleString()
+            alert(
+                "Final Result Saved Successfully!"
+            );
 
-    });
+        }
+    )
+    .catch(
+        function(error) {
 
+            alert(
+                "Result save error: " +
+                error.message
+            );
 
-    alert("Final Result Saved Successfully!");
+        }
+    );
 
 };
 
@@ -1416,9 +1467,11 @@ function() {
     }
 
 
-    if (!confirm(
-        "Reset complete match?"
-    )) {
+    if (
+        !confirm(
+            "Reset complete match?"
+        )
+    ) {
 
         return;
     }
@@ -1439,43 +1492,39 @@ function() {
     timeoutTeam = null;
 
 
-    set(ref(db), {
+    set(
+        ref(db),
+        {
+            score: {
+                A: 0,
+                B: 0
+            },
 
-        score: {
+            timer: {
+                time: 1200,
+                running: false,
+                endAt: null
+            },
 
-            A: 0,
+            timeout: {
+                team: null,
+                endAt: null
+            },
 
-            B: 0
+            records: {}
+        }
+    )
+    .then(
+        function() {
 
-        },
+            alert(
+                "Match Reset Successfully!"
+            );
 
-        timer: {
-
-            time: 1200,
-
-            running: false,
-
-            endAt: null
-
-        },
-
-        timeout: {
-
-            team: null,
-
-            endAt: null
-
-        },
-
-        records: {}
-
-    });
-
-
-    alert("Match Reset Successfully!");
+        }
+    );
 
 };
-
 
 </script>
 
