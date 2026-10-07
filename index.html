@@ -763,11 +763,10 @@ function() {
 
 
 /* =========================
-   RESET TIMER
+   RESET TIMER + SCORE
 ========================= */
 
-window.resetTimer =
-function() {
+window.resetTimer = function() {
 
     if (!isAdmin) {
 
@@ -777,6 +776,67 @@ function() {
 
     }
 
+    /* SCORE RESET */
+
+    scoreA = 0;
+    scoreB = 0;
+
+    document.getElementById("scoreA")
+        .innerText = "0";
+
+    document.getElementById("scoreB")
+        .innerText = "0";
+
+
+    /* TIMER RESET */
+
+    totalSeconds = 1200;
+    timerRunning = false;
+    timerEndAt = null;
+
+    document.getElementById("timer")
+        .innerText = "20:00";
+
+
+    /* SAVE SCORE TO FIREBASE */
+
+    set(
+        ref(db, "score"),
+        {
+            A: 0,
+            B: 0
+        }
+    )
+    .catch(function(error) {
+
+        alert(
+            "Score reset error: " +
+            error.message
+        );
+
+    });
+
+
+    /* SAVE TIMER TO FIREBASE */
+
+    set(
+        ref(db, "timer"),
+        {
+            time: 1200,
+            running: false,
+            endAt: null
+        }
+    )
+    .catch(function(error) {
+
+        alert(
+            "Timer reset error: " +
+            error.message
+        );
+
+    });
+
+};
 
     totalSeconds = 1200;
 
