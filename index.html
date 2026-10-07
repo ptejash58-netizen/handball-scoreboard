@@ -150,7 +150,6 @@ button {
 
 <h1>HANDBALL SCOREBOARD</h1>
 
-
 <!-- ADMIN -->
 
 <button class="admin-btn" onclick="openAdmin()">
@@ -161,11 +160,9 @@ ADMIN
 Viewing Mode
 </div>
 
-
 <!-- SCOREBOARD -->
 
 <div class="scoreboard">
-
 
 <!-- TEAM A -->
 
@@ -194,7 +191,6 @@ onclick="changeScore('A',-1)">
 </div>
 
 </div>
-
 
 <!-- TIME -->
 
@@ -227,7 +223,6 @@ RESET
 
 </div>
 
-
 <!-- TEAM B -->
 
 <div class="team">
@@ -256,11 +251,9 @@ onclick="changeScore('B',-1)">
 
 </div>
 
-
 </div>
 
 </div>
-
 
 <script type="module">
 
@@ -286,7 +279,6 @@ const firebaseConfig = {
     "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com"
 
 };
-
 
 const app =
     initializeApp(firebaseConfig);
@@ -325,23 +317,18 @@ window.openAdmin = function() {
         return;
     }
 
-
     const pin =
         prompt("Enter Admin PIN");
-
 
     if (pin === ADMIN_PIN) {
 
         isAdmin = true;
 
-
         document.getElementById("adminStatus")
             .innerText = "ADMIN MODE ON";
 
-
         document.getElementById("adminStatus")
             .style.color = "lightgreen";
-
 
         document.querySelectorAll(".control")
             .forEach(function(element) {
@@ -349,7 +336,6 @@ window.openAdmin = function() {
                 element.style.display = "block";
 
             });
-
 
         document.querySelector(".admin-btn")
             .innerText = "EXIT ADMIN";
@@ -373,14 +359,11 @@ function logoutAdmin() {
 
     isAdmin = false;
 
-
     document.getElementById("adminStatus")
         .innerText = "Viewing Mode";
 
-
     document.getElementById("adminStatus")
         .style.color = "yellow";
-
 
     document.querySelectorAll(".control")
         .forEach(function(element) {
@@ -388,7 +371,6 @@ function logoutAdmin() {
             element.style.display = "none";
 
         });
-
 
     document.querySelector(".admin-btn")
         .innerText = "ADMIN";
@@ -409,7 +391,6 @@ onValue(
         const data =
             snapshot.val();
 
-
         if (!data) {
 
             return;
@@ -429,10 +410,8 @@ onValue(
 
         }
 
-
         document.getElementById("scoreA")
             .innerText = scoreA;
-
 
         document.getElementById("scoreB")
             .innerText = scoreB;
@@ -447,10 +426,8 @@ onValue(
                     data.timer.time ?? 1200
                 );
 
-
             timerRunning =
                 data.timer.running || false;
-
 
             timerEndAt =
                 data.timer.endAt || null;
@@ -491,7 +468,6 @@ function(team, value) {
 
         scoreA += value;
 
-
         if (scoreA < 0) {
 
             scoreA = 0;
@@ -504,7 +480,6 @@ function(team, value) {
     if (team === "B") {
 
         scoreB += value;
-
 
         if (scoreB < 0) {
 
@@ -519,7 +494,6 @@ function(team, value) {
 
     document.getElementById("scoreA")
         .innerText = scoreA;
-
 
     document.getElementById("scoreB")
         .innerText = scoreB;
@@ -588,7 +562,6 @@ function updateTimerDisplay() {
 
     const minutes =
         Math.floor(seconds / 60);
-
 
     const sec =
         seconds % 60;
@@ -669,7 +642,6 @@ function() {
         Date.now() +
         (totalSeconds * 1000);
 
-
     timerRunning = true;
 
 
@@ -735,7 +707,6 @@ function() {
 
 
     timerRunning = false;
-
     timerEndAt = null;
 
 
@@ -766,7 +737,8 @@ function() {
    RESET TIMER + SCORE
 ========================= */
 
-window.resetTimer = function() {
+window.resetTimer =
+function() {
 
     if (!isAdmin) {
 
@@ -776,10 +748,12 @@ window.resetTimer = function() {
 
     }
 
+
     /* SCORE RESET */
 
     scoreA = 0;
     scoreB = 0;
+
 
     document.getElementById("scoreA")
         .innerText = "0";
@@ -794,19 +768,28 @@ window.resetTimer = function() {
     timerRunning = false;
     timerEndAt = null;
 
+
     document.getElementById("timer")
         .innerText = "20:00";
 
 
-    /* SAVE SCORE TO FIREBASE */
+    /* SAVE SCORE RESET */
 
     set(
+
         ref(db, "score"),
+
         {
             A: 0,
             B: 0
         }
+
     )
+    .then(function() {
+
+        console.log("Score reset successfully");
+
+    })
     .catch(function(error) {
 
         alert(
@@ -817,37 +800,7 @@ window.resetTimer = function() {
     });
 
 
-    /* SAVE TIMER TO FIREBASE */
-
-    set(
-        ref(db, "timer"),
-        {
-            time: 1200,
-            running: false,
-            endAt: null
-        }
-    )
-    .catch(function(error) {
-
-        alert(
-            "Timer reset error: " +
-            error.message
-        );
-
-    });
-
-};
-
-    totalSeconds = 1200;
-
-    timerRunning = false;
-
-    timerEndAt = null;
-
-
-    document.getElementById("timer")
-        .innerText = "20:00";
-
+    /* SAVE TIMER RESET */
 
     set(
 
@@ -860,6 +813,11 @@ window.resetTimer = function() {
         }
 
     )
+    .then(function() {
+
+        console.log("Timer reset successfully");
+
+    })
     .catch(function(error) {
 
         alert(
