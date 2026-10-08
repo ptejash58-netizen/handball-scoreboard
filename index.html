@@ -1,602 +1,2203 @@
-from pathlib import Path
-import base64, textwrap
-
-# Read the three uploaded images from the exact mounted paths.
-paths = {
-    "sgfi": Path("/mnt/data/1001787508.png"),
-    "handball": Path("/mnt/data/1001787500.png"),
-    "sports": Path("/mnt/data/1001787509.png"),
-}
-
-b64 = {}
-for key, p in paths.items():
-    data = p.read_bytes()
-    b64[key] = base64.b64encode(data).decode("ascii")
-
-html = f"""<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>SGFI U-19 BOYS HANDBALL STATE TOURNAMENT</title>
 
 <style>
-*{{box-sizing:border-box}}
 
-body{{
+*{
+    box-sizing:border-box;
+}
+
+body{
     margin:0;
     min-height:100vh;
-    background:#000 url("data:image/png;base64,{b64["handball"]}") center center / cover fixed no-repeat;
+    background:#000;
     color:white;
     font-family:Arial,Helvetica,sans-serif;
     text-align:center;
-}}
+    overflow-x:hidden;
+}
 
-body::before{{
+/* =========================
+   HANDBALL BACKGROUND
+========================= */
+
+body::before{
     content:"";
     position:fixed;
     inset:0;
-    background:rgba(0,0,0,.68);
-    z-index:-1;
-}}
 
-.container{{
+    background-image:
+        linear-gradient(
+            rgba(0,0,0,.68),
+            rgba(0,0,0,.68)
+        ),
+        url("handball.png");
+
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+
+    z-index:-1;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.container{
     width:100%;
     max-width:1500px;
     margin:auto;
     padding:12px 18px 30px;
-}}
+}
 
-.header{{
+
+/* =========================
+   HEADER
+========================= */
+
+.header{
+
     display:flex;
+
     align-items:center;
+
     justify-content:space-between;
+
     gap:18px;
+
     padding:10px 15px;
-    margin-bottom:12px;
-    border:2px solid rgba(255,255,255,.35);
-    border-radius:18px;
-    background:rgba(0,0,0,.72);
-    box-shadow:0 5px 25px rgba(0,0,0,.55);
-}}
 
-.logo{{
+    margin-bottom:15px;
+
+    border:2px solid rgba(255,255,255,.4);
+
+    border-radius:18px;
+
+    background:rgba(0,0,0,.75);
+
+    box-shadow:
+        0 5px 25px rgba(0,0,0,.6);
+}
+
+
+.logo{
+
     width:125px;
+
     height:125px;
+
     object-fit:contain;
-    background:rgba(255,255,255,.96);
+
+    background:white;
+
     border-radius:12px;
+
     padding:6px;
-}}
+}
 
-.header-center{{
+
+.header-center{
+
     flex:1;
-}}
 
-h1{{
+}
+
+
+h1{
+
     font-size:34px;
+
     line-height:1.15;
+
     margin:5px 0;
-    text-shadow:0 3px 10px #000;
-}}
 
-.subtitle{{
+    text-shadow:
+        0 3px 10px black;
+}
+
+
+.subtitle{
+
     font-size:21px;
-    font-weight:bold;
-    color:#ffd400;
-    margin-top:8px;
-}}
 
-.ground-box{{
+    font-weight:bold;
+
+    color:#ffd400;
+
+}
+
+
+/* =========================
+   GROUND
+========================= */
+
+.ground-box{
+
     border:3px solid rgba(255,255,255,.5);
+
     border-radius:18px;
+
     margin:20px auto;
+
     padding:14px;
+
     max-width:1450px;
+
     background:rgba(0,0,0,.72);
-    box-shadow:0 6px 25px rgba(0,0,0,.55);
-}}
 
-.ground-title{{
+    box-shadow:
+        0 6px 25px rgba(0,0,0,.6);
+}
+
+
+.ground-title{
+
     font-size:30px;
+
     font-weight:bold;
+
     margin-bottom:12px;
-}}
+}
 
-.ground1-title{{color:#00aaff}}
-.ground2-title{{color:#00ff66}}
 
-.admin-status{{
+.ground1-title{
+    color:#00aaff;
+}
+
+
+.ground2-title{
+    color:#00ff66;
+}
+
+
+/* =========================
+   ADMIN STATUS
+========================= */
+
+.admin-status{
+
     font-size:17px;
-    color:#ffd400;
-    margin:8px;
-}}
 
-.scoreboard{{
+    color:yellow;
+
+    margin:8px;
+}
+
+
+/* =========================
+   SCOREBOARD
+========================= */
+
+.scoreboard{
+
     display:flex;
+
     justify-content:space-between;
+
     align-items:center;
+
     gap:20px;
-    margin-top:12px;
-}}
 
-.team{{
+    margin-top:12px;
+}
+
+
+.team{
+
     width:36%;
-}}
+}
 
-.team-name{{
+
+/* TEAM NAME */
+
+.team-name{
+
     font-size:38px;
+
     font-weight:bold;
+
     margin-bottom:8px;
+
     border:3px solid white;
+
     border-radius:12px;
+
     padding:10px;
+
     min-height:70px;
+
     display:flex;
+
     justify-content:center;
+
     align-items:center;
+
     background:rgba(10,10,10,.9);
+
     word-break:break-word;
-}}
+}
 
-.score{{
+
+/* SCORE */
+
+.score{
+
     font-size:120px;
-    line-height:1;
-    color:#ff2020;
-    font-weight:bold;
-    text-shadow:0 4px 12px #000;
-}}
 
-.timer-box{{
+    line-height:1;
+
+    color:red;
+
+    font-weight:bold;
+
+    text-shadow:
+        0 4px 12px black;
+}
+
+
+/* TIMER */
+
+.timer-box{
+
     min-width:190px;
-}}
+}
 
-.timer{{
+
+.timer{
+
     font-size:88px;
+
     color:#ffe600;
+
     font-weight:bold;
+
     line-height:1;
-    text-shadow:0 4px 12px #000;
-}}
 
-button{{
+    text-shadow:
+        0 4px 12px black;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
+
+button{
+
     padding:11px 18px;
+
     font-size:17px;
+
     font-weight:bold;
+
     margin:4px;
+
     border:none;
+
     border-radius:8px;
+
     cursor:pointer;
-}}
+}
 
-button:active{{transform:scale(.96)}}
-.green{{background:#0a9f36;color:white}}
-.red{{background:#e00000;color:white}}
-.blue{{background:#006eff;color:white}}
-.orange{{background:#ff9500;color:black}}
-.gray{{background:#555;color:white}}
-.admin-btn{{background:white;color:#000}}
 
-.control{{display:none}}
+button:active{
 
-.team-settings{{
+    transform:scale(.96);
+}
+
+
+.green{
+
+    background:#0a9f36;
+
+    color:white;
+}
+
+
+.red{
+
+    background:#e00000;
+
+    color:white;
+}
+
+
+.blue{
+
+    background:#006eff;
+
+    color:white;
+}
+
+
+.orange{
+
+    background:#ff9500;
+
+    color:black;
+}
+
+
+.gray{
+
+    background:#555;
+
+    color:white;
+}
+
+
+.admin-btn{
+
+    background:white;
+
+    color:black;
+}
+
+
+/* =========================
+   ADMIN CONTROLS
+========================= */
+
+.control{
+
     display:none;
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.team-settings{
+
+    display:none;
+
     margin-top:18px;
+
     padding:18px;
+
     border:2px solid #555;
+
     border-radius:12px;
+
     background:rgba(0,0,0,.65);
-}}
+}
 
-.settings-title{{
+
+.settings-title{
+
     font-size:18px;
+
     margin:8px;
+
     color:#ffe600;
+
     font-weight:bold;
-}}
+}
 
-.team-input,.time-input{{
+
+.team-input,
+.time-input{
+
     padding:11px;
+
     margin:4px;
+
     font-size:17px;
+
     border-radius:7px;
+
     border:none;
+
     text-align:center;
-}}
+}
 
-.team-input{{width:270px}}
-.time-input{{width:170px}}
 
-.save-names{{
+.team-input{
+
+    width:270px;
+}
+
+
+.time-input{
+
+    width:170px;
+}
+
+
+.save-names{
+
     background:#00aaff;
+
     color:white;
-}}
+}
 
-.fullscreen-btn{{
-    background:#8e44ad;
-    color:white;
-    margin-top:10px;
-}}
 
-.footer{{
-    margin-top:12px;
-    font-size:13px;
-    color:#ddd;
-}}
+/* =========================
+   MOBILE
+========================= */
 
-@media(max-width:700px){{
-    .container{{padding:7px 6px 20px}}
-    .header{{gap:5px;padding:7px;border-radius:12px}}
-    .logo{{width:70px;height:70px;padding:3px}}
-    h1{{font-size:17px}}
-    .subtitle{{font-size:12px;margin-top:3px}}
-    .ground-box{{margin:10px auto;padding:8px;border-radius:12px}}
-    .ground-title{{font-size:23px}}
-    .scoreboard{{gap:3px}}
-    .team{{width:37%}}
-    .team-name{{font-size:18px;min-height:50px;padding:6px;border-width:2px}}
-    .score{{font-size:68px}}
-    .timer-box{{min-width:85px}}
-    .timer{{font-size:43px}}
-    button{{font-size:14px;padding:9px 10px;margin:3px}}
-    .team-input,.time-input{{width:90%;max-width:280px}}
-}}
+@media(max-width:700px){
+
+    .container{
+
+        padding:7px 6px 20px;
+
+    }
+
+
+    .header{
+
+        gap:5px;
+
+        padding:7px;
+
+        border-radius:12px;
+
+    }
+
+
+    .logo{
+
+        width:70px;
+
+        height:70px;
+
+        padding:3px;
+
+    }
+
+
+    h1{
+
+        font-size:17px;
+
+    }
+
+
+    .subtitle{
+
+        font-size:12px;
+
+    }
+
+
+    .ground-box{
+
+        margin:10px auto;
+
+        padding:8px;
+
+        border-radius:12px;
+
+    }
+
+
+    .ground-title{
+
+        font-size:23px;
+
+    }
+
+
+    .scoreboard{
+
+        gap:3px;
+
+    }
+
+
+    .team{
+
+        width:37%;
+
+    }
+
+
+    .team-name{
+
+        font-size:18px;
+
+        min-height:50px;
+
+        padding:6px;
+
+        border-width:2px;
+
+    }
+
+
+    .score{
+
+        font-size:68px;
+
+    }
+
+
+    .timer-box{
+
+        min-width:85px;
+
+    }
+
+
+    .timer{
+
+        font-size:43px;
+
+    }
+
+
+    button{
+
+        font-size:14px;
+
+        padding:9px 10px;
+
+        margin:3px;
+
+    }
+
+
+    .team-input,
+    .time-input{
+
+        width:90%;
+
+        max-width:280px;
+
+    }
+
+}
+
 </style>
+
 </head>
 
+
 <body>
+
+
 <div class="container">
 
+
+<!-- =====================================================
+     HEADER
+===================================================== -->
+
 <header class="header">
-    <!-- LEFT: SGFI LOGO -->
-    <img class="logo" src="data:image/png;base64,{b64["sgfi"]}" alt="SGFI Logo">
 
-    <div class="header-center">
-        <h1>SGFI U-19 BOYS HANDBALL STATE TOURNAMENT</h1>
-        <div class="subtitle">AT - BILIMORA (NAVSARI)</div>
-    </div>
 
-    <!-- RIGHT: SPORTS AUTHORITY OF GUJARAT -->
-    <img class="logo" src="data:image/png;base64,{b64["sports"]}" alt="Sports Authority of Gujarat">
+<!-- LEFT SIDE SGFI -->
+
+<img
+class="logo"
+src="sgfi.png"
+alt="SGFI Logo"
+>
+
+
+<div class="header-center">
+
+<h1>
+
+SGFI U-19 BOYS HANDBALL
+STATE TOURNAMENT
+
+</h1>
+
+
+<div class="subtitle">
+
+AT - BILIMORA (NAVSARI)
+
+</div>
+
+</div>
+
+
+<!-- RIGHT SIDE SPORTS AUTHORITY -->
+
+<img
+class="logo"
+src="sports.png"
+alt="Sports Authority of Gujarat"
+>
+
+
 </header>
 
-<!-- ================= GROUND 1 ================= -->
+
+
+<!-- =====================================================
+     GROUND 1
+===================================================== -->
+
 <div class="ground-box">
-    <div class="ground-title ground1-title">GROUND 1</div>
 
-    <button class="admin-btn" onclick="openAdmin(1)">ADMIN</button>
-    <div id="adminStatus1" class="admin-status">Viewing Mode</div>
 
-    <div class="scoreboard">
-        <div class="team">
-            <div class="team-name" id="teamAName1">AMDAVAD CITY</div>
-            <div class="score" id="scoreA1">0</div>
-            <div class="control" id="scoreControlA1">
-                <button class="green" onclick="changeScore(1,'A',1)">+1</button>
-                <button class="red" onclick="changeScore(1,'A',-1)">-1</button>
-            </div>
-        </div>
+<div class="ground-title ground1-title">
 
-        <div class="timer-box">
-            <div class="timer" id="timer1">20:00</div>
-            <div class="control" id="timerControl1">
-                <button class="blue" onclick="startTimer(1)">START</button>
-                <button class="orange" onclick="stopTimer(1)">STOP</button><br>
-                <button class="gray" onclick="resetTimer(1)">RESET</button>
-            </div>
-        </div>
+GROUND 1
 
-        <div class="team">
-            <div class="team-name" id="teamBName1">KHEDA</div>
-            <div class="score" id="scoreB1">0</div>
-            <div class="control" id="scoreControlB1">
-                <button class="green" onclick="changeScore(1,'B',1)">+1</button>
-                <button class="red" onclick="changeScore(1,'B',-1)">-1</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="team-settings" id="teamSettings1">
-        <div class="settings-title">TEAM A NAME</div>
-        <input id="teamAInput1" class="team-input" placeholder="TEAM A NAME">
-
-        <div class="settings-title">TEAM B NAME</div>
-        <input id="teamBInput1" class="team-input" placeholder="TEAM B NAME">
-
-        <div class="settings-title">MATCH TIME (MINUTES)</div>
-        <input id="matchTimeInput1" class="time-input" type="number" min="1" value="20">
-
-        <br>
-        <button class="save-names" onclick="saveSettings(1)">SAVE TEAM NAMES & TIME</button>
-    </div>
 </div>
 
-<!-- ================= GROUND 2 ================= -->
+
+<button
+class="admin-btn"
+onclick="openAdmin(1)"
+>
+
+ADMIN
+
+</button>
+
+
+<div
+id="adminStatus1"
+class="admin-status"
+>
+
+Viewing Mode
+
+</div>
+
+
+
+<div class="scoreboard">
+
+
+<!-- TEAM A -->
+
+<div class="team">
+
+
+<div
+class="team-name"
+id="teamAName1"
+>
+
+AMDAVAD CITY
+
+</div>
+
+
+<div
+class="score"
+id="scoreA1"
+>
+
+0
+
+</div>
+
+
+<div
+class="control"
+id="scoreControlA1"
+>
+
+<button
+class="green"
+onclick="changeScore(1,'A',1)"
+>
+
++1
+
+</button>
+
+
+<button
+class="red"
+onclick="changeScore(1,'A',-1)"
+>
+
+-1
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<!-- TIMER -->
+
+<div class="timer-box">
+
+
+<div
+class="timer"
+id="timer1"
+>
+
+20:00
+
+</div>
+
+
+<div
+class="control"
+id="timerControl1"
+>
+
+<button
+class="blue"
+onclick="startTimer(1)"
+>
+
+START
+
+</button>
+
+
+<button
+class="orange"
+onclick="stopTimer(1)"
+>
+
+STOP
+
+</button>
+
+
+<br>
+
+
+<button
+class="gray"
+onclick="resetTimer(1)"
+>
+
+RESET
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<!-- TEAM B -->
+
+<div class="team">
+
+
+<div
+class="team-name"
+id="teamBName1"
+>
+
+KHEDA
+
+</div>
+
+
+<div
+class="score"
+id="scoreB1"
+>
+
+0
+
+</div>
+
+
+<div
+class="control"
+id="scoreControlB1"
+>
+
+<button
+class="green"
+onclick="changeScore(1,'B',1)"
+>
+
++1
+
+</button>
+
+
+<button
+class="red"
+onclick="changeScore(1,'B',-1)"
+>
+
+-1
+
+</button>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- SETTINGS -->
+
+<div
+class="team-settings"
+id="teamSettings1"
+>
+
+
+<div class="settings-title">
+
+TEAM A NAME
+
+</div>
+
+
+<input
+id="teamAInput1"
+class="team-input"
+placeholder="TEAM A NAME"
+>
+
+
+<div class="settings-title">
+
+TEAM B NAME
+
+</div>
+
+
+<input
+id="teamBInput1"
+class="team-input"
+placeholder="TEAM B NAME"
+>
+
+
+<div class="settings-title">
+
+MATCH TIME (MINUTES)
+
+</div>
+
+
+<input
+id="matchTimeInput1"
+class="time-input"
+type="number"
+min="1"
+value="20"
+>
+
+
+<br>
+
+
+<button
+class="save-names"
+onclick="saveSettings(1)"
+>
+
+SAVE TEAM NAMES & TIME
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- =====================================================
+     GROUND 2
+===================================================== -->
+
 <div class="ground-box">
-    <div class="ground-title ground2-title">GROUND 2</div>
 
-    <button class="admin-btn" onclick="openAdmin(2)">ADMIN</button>
-    <div id="adminStatus2" class="admin-status">Viewing Mode</div>
 
-    <div class="scoreboard">
-        <div class="team">
-            <div class="team-name" id="teamAName2">TEAM A</div>
-            <div class="score" id="scoreA2">0</div>
-            <div class="control" id="scoreControlA2">
-                <button class="green" onclick="changeScore(2,'A',1)">+1</button>
-                <button class="red" onclick="changeScore(2,'A',-1)">-1</button>
-            </div>
-        </div>
+<div class="ground-title ground2-title">
 
-        <div class="timer-box">
-            <div class="timer" id="timer2">20:00</div>
-            <div class="control" id="timerControl2">
-                <button class="blue" onclick="startTimer(2)">START</button>
-                <button class="orange" onclick="stopTimer(2)">STOP</button><br>
-                <button class="gray" onclick="resetTimer(2)">RESET</button>
-            </div>
-        </div>
-
-        <div class="team">
-            <div class="team-name" id="teamBName2">TEAM B</div>
-            <div class="score" id="scoreB2">0</div>
-            <div class="control" id="scoreControlB2">
-                <button class="green" onclick="changeScore(2,'B',1)">+1</button>
-                <button class="red" onclick="changeScore(2,'B',-1)">-1</button>
-            </div>
-        </div>
-    </div>
-
-    <div class="team-settings" id="teamSettings2">
-        <div class="settings-title">TEAM A NAME</div>
-        <input id="teamAInput2" class="team-input" placeholder="TEAM A NAME">
-
-        <div class="settings-title">TEAM B NAME</div>
-        <input id="teamBInput2" class="team-input" placeholder="TEAM B NAME">
-
-        <div class="settings-title">MATCH TIME (MINUTES)</div>
-        <input id="matchTimeInput2" class="time-input" type="number" min="1" value="20">
-
-        <br>
-        <button class="save-names" onclick="saveSettings(2)">SAVE TEAM NAMES & TIME</button>
-    </div>
-</div>
-
-<div class="footer">SGFI U-19 Boys Handball State Tournament • Live Scoreboard</div>
+GROUND 2
 
 </div>
+
+
+<button
+class="admin-btn"
+onclick="openAdmin(2)"
+>
+
+ADMIN
+
+</button>
+
+
+<div
+id="adminStatus2"
+class="admin-status"
+>
+
+Viewing Mode
+
+</div>
+
+
+
+<div class="scoreboard">
+
+
+<!-- TEAM A -->
+
+<div class="team">
+
+
+<div
+class="team-name"
+id="teamAName2"
+>
+
+TEAM A
+
+</div>
+
+
+<div
+class="score"
+id="scoreA2"
+>
+
+0
+
+</div>
+
+
+<div
+class="control"
+id="scoreControlA2"
+>
+
+<button
+class="green"
+onclick="changeScore(2,'A',1)"
+>
+
++1
+
+</button>
+
+
+<button
+class="red"
+onclick="changeScore(2,'A',-1)"
+>
+
+-1
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<!-- TIMER -->
+
+<div class="timer-box">
+
+
+<div
+class="timer"
+id="timer2"
+>
+
+20:00
+
+</div>
+
+
+<div
+class="control"
+id="timerControl2"
+>
+
+<button
+class="blue"
+onclick="startTimer(2)"
+>
+
+START
+
+</button>
+
+
+<button
+class="orange"
+onclick="stopTimer(2)"
+>
+
+STOP
+
+</button>
+
+
+<br>
+
+
+<button
+class="gray"
+onclick="resetTimer(2)"
+>
+
+RESET
+
+</button>
+
+</div>
+
+
+</div>
+
+
+
+<!-- TEAM B -->
+
+<div class="team">
+
+
+<div
+class="team-name"
+id="teamBName2"
+>
+
+TEAM B
+
+</div>
+
+
+<div
+class="score"
+id="scoreB2"
+>
+
+0
+
+</div>
+
+
+<div
+class="control"
+id="scoreControlB2"
+>
+
+<button
+class="green"
+onclick="changeScore(2,'B',1)"
+>
+
++1
+
+</button>
+
+
+<button
+class="red"
+onclick="changeScore(2,'B',-1)"
+>
+
+-1
+
+</button>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+
+<!-- SETTINGS -->
+
+<div
+class="team-settings"
+id="teamSettings2"
+>
+
+
+<div class="settings-title">
+
+TEAM A NAME
+
+</div>
+
+
+<input
+id="teamAInput2"
+class="team-input"
+placeholder="TEAM A NAME"
+>
+
+
+<div class="settings-title">
+
+TEAM B NAME
+
+</div>
+
+
+<input
+id="teamBInput2"
+class="team-input"
+placeholder="TEAM B NAME"
+>
+
+
+<div class="settings-title">
+
+MATCH TIME (MINUTES)
+
+</div>
+
+
+<input
+id="matchTimeInput2"
+class="time-input"
+type="number"
+min="1"
+value="20"
+>
+
+
+<br>
+
+
+<button
+class="save-names"
+onclick="saveSettings(2)"
+>
+
+SAVE TEAM NAMES & TIME
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
 
 <script type="module">
-import {{ initializeApp }} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-import {{
-    getDatabase, ref, set, onValue
-}} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-const firebaseConfig = {{
-    databaseURL: "https://scoreboard-app-2faa3-default-rtdb.firebaseio.com"
-}};
 
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+/* =====================================================
+   FIREBASE IMPORT
+===================================================== */
 
-const ground = {{
-    1: {{
-        pin:"1516", scoreA:0, scoreB:0, matchMinutes:20,
-        totalSeconds:1200, timerRunning:false, timerStartAt:null, isAdmin:false
-    }},
-    2: {{
-        pin:"4411", scoreA:0, scoreB:0, matchMinutes:20,
-        totalSeconds:1200, timerRunning:false, timerStartAt:null, isAdmin:false
-    }}
-}};
+import {
 
-function $(id){{ return document.getElementById(id); }}
+initializeApp
 
-window.openAdmin = function(g){{
-    if(ground[g].isAdmin){{ logoutAdmin(g); return; }}
+}
 
-    const pin = prompt("Enter Ground " + g + " Admin PIN");
-    if(pin !== ground[g].pin){{ alert("Wrong PIN!"); return; }}
+from
 
-    ground[g].isAdmin = true;
-    $("adminStatus"+g).innerText = "GROUND " + g + " ADMIN MODE ON";
-    $("adminStatus"+g).style.color = "lightgreen";
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
 
-    $("scoreControlA"+g).style.display = "block";
-    $("scoreControlB"+g).style.display = "block";
-    $("timerControl"+g).style.display = "block";
-    $("teamSettings"+g).style.display = "block";
 
-    $("teamAInput"+g).value = $("teamAName"+g).innerText;
-    $("teamBInput"+g).value = $("teamBName"+g).innerText;
-    $("matchTimeInput"+g).value = ground[g].matchMinutes;
+import {
 
-    document.querySelectorAll(".ground-box")[g-1]
-        .querySelector(".admin-btn").innerText = "EXIT ADMIN";
-}};
+getDatabase,
+ref,
+set,
+onValue
 
-function logoutAdmin(g){{
-    ground[g].isAdmin = false;
-    $("adminStatus"+g).innerText = "Viewing Mode";
-    $("adminStatus"+g).style.color = "yellow";
-    $("scoreControlA"+g).style.display = "none";
-    $("scoreControlB"+g).style.display = "none";
-    $("timerControl"+g).style.display = "none";
-    $("teamSettings"+g).style.display = "none";
+}
 
-    document.querySelectorAll(".ground-box")[g-1]
-        .querySelector(".admin-btn").innerText = "ADMIN";
-}}
+from
 
-function loadGround(g){{
-    onValue(ref(db,"ground"+g),(snapshot)=>{{
-        const data = snapshot.val();
-        if(!data) return;
+"https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
-        if(data.score){{
-            ground[g].scoreA = Number(data.score.A || 0);
-            ground[g].scoreB = Number(data.score.B || 0);
-        }}
 
-        if(data.timer){{
-            ground[g].matchMinutes = Number(data.timer.matchMinutes ?? 20);
-            ground[g].totalSeconds = Number(data.timer.time ?? ground[g].matchMinutes*60);
-            ground[g].timerRunning = data.timer.running === true;
-            ground[g].timerStartAt = data.timer.startAt || null;
-        }}
 
-        if(data.teams){{
-            if(data.teams.A) $("teamAName"+g).innerText = data.teams.A;
-            if(data.teams.B) $("teamBName"+g).innerText = data.teams.B;
-        }}
+/* =====================================================
+   FIREBASE CONFIG
+===================================================== */
 
-        $("scoreA"+g).innerText = ground[g].scoreA;
-        $("scoreB"+g).innerText = ground[g].scoreB;
-        updateTimerDisplay(g);
-    }});
-}}
+const firebaseConfig = {
+
+databaseURL:
+"https://scoreboard-app-2faa3-default-rtdb.firebaseio.com"
+
+};
+
+
+const app =
+initializeApp(firebaseConfig);
+
+
+const db =
+getDatabase(app);
+
+
+
+/* =====================================================
+   GROUND DATA
+===================================================== */
+
+const ground = {
+
+
+1:{
+
+pin:"1516",
+
+scoreA:0,
+
+scoreB:0,
+
+matchMinutes:20,
+
+totalSeconds:1200,
+
+timerRunning:false,
+
+timerStartAt:null,
+
+isAdmin:false
+
+},
+
+
+2:{
+
+pin:"4411",
+
+scoreA:0,
+
+scoreB:0,
+
+matchMinutes:20,
+
+totalSeconds:1200,
+
+timerRunning:false,
+
+timerStartAt:null,
+
+isAdmin:false
+
+}
+
+};
+
+
+
+/* =====================================================
+   SHORT FUNCTION
+===================================================== */
+
+function $(id){
+
+return document.getElementById(id);
+
+}
+
+
+
+/* =====================================================
+   ADMIN LOGIN
+===================================================== */
+
+window.openAdmin=function(g){
+
+
+if(ground[g].isAdmin){
+
+logoutAdmin(g);
+
+return;
+
+}
+
+
+const pin=
+
+prompt(
+"Enter Ground "+
+g+
+" Admin PIN"
+);
+
+
+if(pin!==ground[g].pin){
+
+alert("Wrong PIN!");
+
+return;
+
+}
+
+
+ground[g].isAdmin=true;
+
+
+$("adminStatus"+g).innerText=
+
+"GROUND "+
+g+
+" ADMIN MODE ON";
+
+
+$("adminStatus"+g).style.color=
+
+"lightgreen";
+
+
+$("scoreControlA"+g).style.display=
+
+"block";
+
+
+$("scoreControlB"+g).style.display=
+
+"block";
+
+
+$("timerControl"+g).style.display=
+
+"block";
+
+
+$("teamSettings"+g).style.display=
+
+"block";
+
+
+$("teamAInput"+g).value=
+
+$("teamAName"+g).innerText;
+
+
+$("teamBInput"+g).value=
+
+$("teamBName"+g).innerText;
+
+
+$("matchTimeInput"+g).value=
+
+ground[g].matchMinutes;
+
+
+document
+.querySelectorAll(".ground-box")[g-1]
+.querySelector(".admin-btn")
+.innerText=
+
+"EXIT ADMIN";
+
+};
+
+
+
+/* =====================================================
+   LOGOUT
+===================================================== */
+
+function logoutAdmin(g){
+
+
+ground[g].isAdmin=false;
+
+
+$("adminStatus"+g).innerText=
+
+"Viewing Mode";
+
+
+$("adminStatus"+g).style.color=
+
+"yellow";
+
+
+$("scoreControlA"+g).style.display=
+
+"none";
+
+
+$("scoreControlB"+g).style.display=
+
+"none";
+
+
+$("timerControl"+g).style.display=
+
+"none";
+
+
+$("teamSettings"+g).style.display=
+
+"none";
+
+
+document
+.querySelectorAll(".ground-box")[g-1]
+.querySelector(".admin-btn")
+.innerText=
+
+"ADMIN";
+
+}
+
+
+
+/* =====================================================
+   LOAD FIREBASE
+===================================================== */
+
+function loadGround(g){
+
+
+onValue(
+
+ref(db,"ground"+g),
+
+(snapshot)=>{
+
+
+const data=snapshot.val();
+
+
+if(!data)return;
+
+
+
+/* SCORE */
+
+if(data.score){
+
+ground[g].scoreA=
+
+Number(data.score.A||0);
+
+
+ground[g].scoreB=
+
+Number(data.score.B||0);
+
+}
+
+
+
+/* TIMER */
+
+if(data.timer){
+
+ground[g].matchMinutes=
+
+Number(
+data.timer.matchMinutes??20
+);
+
+
+ground[g].totalSeconds=
+
+Number(
+data.timer.time??
+ground[g].matchMinutes*60
+);
+
+
+ground[g].timerRunning=
+
+data.timer.running===true;
+
+
+ground[g].timerStartAt=
+
+data.timer.startAt||null;
+
+}
+
+
+
+/* TEAMS */
+
+if(data.teams){
+
+if(data.teams.A){
+
+$("teamAName"+g).innerText=
+
+data.teams.A;
+
+}
+
+
+if(data.teams.B){
+
+$("teamBName"+g).innerText=
+
+data.teams.B;
+
+}
+
+}
+
+
+
+$("scoreA"+g).innerText=
+
+ground[g].scoreA;
+
+
+$("scoreB"+g).innerText=
+
+ground[g].scoreB;
+
+
+updateTimerDisplay(g);
+
+}
+
+);
+
+}
+
+
+
+/* LOAD BOTH */
 
 loadGround(1);
+
 loadGround(2);
 
-window.saveSettings = function(g){{
-    if(!ground[g].isAdmin){{ alert("Admin PIN required!"); return; }}
 
-    const teamA = $("teamAInput"+g).value.trim();
-    const teamB = $("teamBInput"+g).value.trim();
-    const minutes = Number($("matchTimeInput"+g).value);
 
-    if(!teamA){{ alert("Enter Team A Name"); return; }}
-    if(!teamB){{ alert("Enter Team B Name"); return; }}
-    if(!minutes || minutes < 1){{ alert("Enter Match Time in minutes"); return; }}
+/* =====================================================
+   SAVE SETTINGS
+===================================================== */
 
-    ground[g].matchMinutes = minutes;
-    ground[g].totalSeconds = minutes * 60;
-    ground[g].timerRunning = false;
-    ground[g].timerStartAt = null;
+window.saveSettings=function(g){
 
-    $("teamAName"+g).innerText = teamA;
-    $("teamBName"+g).innerText = teamB;
-    updateTimerDisplay(g);
 
-    Promise.all([
-        set(ref(db,"ground"+g+"/teams"),{{A:teamA,B:teamB}}),
-        set(ref(db,"ground"+g+"/timer"),{{
-            time:minutes*60, running:false, startAt:null, matchMinutes:minutes
-        }})
-    ]).then(()=>{{
-        alert("Ground "+g+" Team Names & Time Saved");
-    }}).catch(err=>alert("Save error: "+err.message));
-}};
+if(!ground[g].isAdmin){
 
-window.changeScore = function(g,team,value){{
-    if(!ground[g].isAdmin){{ alert("Admin PIN required!"); return; }}
+alert("Admin PIN required!");
 
-    if(team==="A") ground[g].scoreA = Math.max(0,ground[g].scoreA+value);
-    if(team==="B") ground[g].scoreB = Math.max(0,ground[g].scoreB+value);
+return;
 
-    $("scoreA"+g).innerText = ground[g].scoreA;
-    $("scoreB"+g).innerText = ground[g].scoreB;
+}
 
-    set(ref(db,"ground"+g+"/score"),{{
-        A:ground[g].scoreA, B:ground[g].scoreB
-    }}).catch(err=>alert("Score save error: "+err.message));
-}};
 
-function getCurrentRemaining(g){{
-    let remaining = ground[g].totalSeconds;
+const teamA=
 
-    if(ground[g].timerRunning && ground[g].timerStartAt){{
-        remaining = ground[g].totalSeconds -
-            Math.floor((Date.now()-ground[g].timerStartAt)/1000);
-    }}
+$("teamAInput"+g)
+.value.trim();
 
-    return Math.max(0, remaining);
-}}
 
-window.startTimer = function(g){{
-    if(!ground[g].isAdmin){{ alert("Admin PIN required!"); return; }}
-    if(ground[g].timerRunning) return;
+const teamB=
 
-    let remaining = getCurrentRemaining(g);
-    if(remaining <= 0) remaining = ground[g].matchMinutes * 60;
+$("teamBInput"+g)
+.value.trim();
 
-    ground[g].totalSeconds = remaining;
-    ground[g].timerStartAt = Date.now();
-    ground[g].timerRunning = true;
 
-    set(ref(db,"ground"+g+"/timer"),{{
-        time:remaining,
-        running:true,
-        startAt:ground[g].timerStartAt,
-        matchMinutes:ground[g].matchMinutes
-    }}).catch(err=>alert("Timer start error: "+err.message));
-}};
+const minutes=
 
-window.stopTimer = function(g){{
-    if(!ground[g].isAdmin){{ alert("Admin PIN required!"); return; }}
-    if(!ground[g].timerRunning) return;
+Number(
+$("matchTimeInput"+g).value
+);
 
-    const remaining = getCurrentRemaining(g);
-    ground[g].totalSeconds = remaining;
-    ground[g].timerRunning = false;
-    ground[g].timerStartAt = null;
 
-    set(ref(db,"ground"+g+"/timer"),{{
-        time:remaining,
-        running:false,
-        startAt:null,
-        matchMinutes:ground[g].matchMinutes
-    }}).catch(err=>alert("Timer stop error: "+err.message));
-}};
+if(!teamA){
 
-window.resetTimer = function(g){{
-    if(!ground[g].isAdmin){{ alert("Admin PIN required!"); return; }}
+alert("Enter Team A Name");
 
-    const total = ground[g].matchMinutes * 60;
-    ground[g].totalSeconds = total;
-    ground[g].timerRunning = false;
-    ground[g].timerStartAt = null;
-    updateTimerDisplay(g);
+return;
 
-    set(ref(db,"ground"+g+"/timer"),{{
-        time:total,
-        running:false,
-        startAt:null,
-        matchMinutes:ground[g].matchMinutes
-    }}).catch(err=>alert("Timer reset error: "+err.message));
-}};
+}
 
-function updateTimerDisplay(g){{
-    let seconds = getCurrentRemaining(g);
 
-    if(seconds <= 0 && ground[g].timerRunning){{
-        ground[g].totalSeconds = 0;
-        ground[g].timerRunning = false;
-        ground[g].timerStartAt = null;
+if(!teamB){
 
-        set(ref(db,"ground"+g+"/timer"),{{
-            time:0,
-            running:false,
-            startAt:null,
-            matchMinutes:ground[g].matchMinutes
-        }});
-    }}
+alert("Enter Team B Name");
 
-    const min = Math.floor(seconds/60);
-    const sec = seconds % 60;
-    $("timer"+g).innerText = min + ":" + String(sec).padStart(2,"0");
-}}
+return;
 
-setInterval(()=>{{
-    updateTimerDisplay(1);
-    updateTimerDisplay(2);
-}},250);
+}
+
+
+if(!minutes||minutes<1){
+
+alert(
+"Enter Match Time in minutes"
+);
+
+return;
+
+}
+
+
+
+ground[g].matchMinutes=
+
+minutes;
+
+
+ground[g].totalSeconds=
+
+minutes*60;
+
+
+ground[g].timerRunning=
+
+false;
+
+
+ground[g].timerStartAt=
+
+null;
+
+
+$("teamAName"+g).innerText=
+
+teamA;
+
+
+$("teamBName"+g).innerText=
+
+teamB;
+
+
+updateTimerDisplay(g);
+
+
+
+Promise.all([
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/teams"
+),
+
+{
+
+A:teamA,
+
+B:teamB
+
+}
+
+),
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/timer"
+),
+
+{
+
+time:minutes*60,
+
+running:false,
+
+startAt:null,
+
+matchMinutes:minutes
+
+}
+
+)
+
+
+])
+
+.then(()=>{
+
+alert(
+"Ground "+
+g+
+" Team Names & Time Saved"
+);
+
+})
+
+
+.catch(err=>{
+
+alert(
+"Save Error: "+
+err.message
+);
+
+});
+
+};
+
+
+
+/* =====================================================
+   SCORE
+===================================================== */
+
+window.changeScore=function(g,team,value){
+
+
+if(!ground[g].isAdmin){
+
+alert("Admin PIN required!");
+
+return;
+
+}
+
+
+if(team==="A"){
+
+ground[g].scoreA=
+
+Math.max(
+0,
+ground[g].scoreA+value
+);
+
+}
+
+
+if(team==="B"){
+
+ground[g].scoreB=
+
+Math.max(
+0,
+ground[g].scoreB+value
+);
+
+}
+
+
+$("scoreA"+g).innerText=
+
+ground[g].scoreA;
+
+
+$("scoreB"+g).innerText=
+
+ground[g].scoreB;
+
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/score"
+),
+
+{
+
+A:ground[g].scoreA,
+
+B:ground[g].scoreB
+
+}
+
+)
+.catch(err=>{
+
+alert(
+"Score save error: "+
+err.message
+);
+
+});
+
+};
+
+
+
+/* =====================================================
+   GET REMAINING TIME
+===================================================== */
+
+function getCurrentRemaining(g){
+
+
+let remaining=
+
+ground[g].totalSeconds;
+
+
+if(
+
+ground[g].timerRunning&&
+ground[g].timerStartAt
+
+){
+
+
+remaining=
+
+ground[g].totalSeconds-
+
+Math.floor(
+
+(
+Date.now()-
+ground[g].timerStartAt
+)/1000
+
+);
+
+}
+
+
+return Math.max(
+0,
+remaining
+);
+
+}
+
+
+
+/* =====================================================
+   START TIMER
+===================================================== */
+
+window.startTimer=function(g){
+
+
+if(!ground[g].isAdmin){
+
+alert("Admin PIN required!");
+
+return;
+
+}
+
+
+if(ground[g].timerRunning){
+
+return;
+
+}
+
+
+let remaining=
+
+getCurrentRemaining(g);
+
+
+if(remaining<=0){
+
+remaining=
+
+ground[g].matchMinutes*60;
+
+}
+
+
+ground[g].totalSeconds=
+
+remaining;
+
+
+ground[g].timerStartAt=
+
+Date.now();
+
+
+ground[g].timerRunning=
+
+true;
+
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/timer"
+),
+
+{
+
+time:remaining,
+
+running:true,
+
+startAt:
+ground[g].timerStartAt,
+
+matchMinutes:
+ground[g].matchMinutes
+
+}
+
+);
+
+};
+
+
+
+/* =====================================================
+   STOP TIMER
+===================================================== */
+
+window.stopTimer=function(g){
+
+
+if(!ground[g].isAdmin){
+
+alert("Admin PIN required!");
+
+return;
+
+}
+
+
+if(!ground[g].timerRunning){
+
+return;
+
+}
+
+
+const remaining=
+
+getCurrentRemaining(g);
+
+
+ground[g].totalSeconds=
+
+remaining;
+
+
+ground[g].timerRunning=
+
+false;
+
+
+ground[g].timerStartAt=
+
+null;
+
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/timer"
+),
+
+{
+
+time:remaining,
+
+running:false,
+
+startAt:null,
+
+matchMinutes:
+ground[g].matchMinutes
+
+}
+
+);
+
+};
+
+
+
+/* =====================================================
+   RESET TIMER
+===================================================== */
+
+window.resetTimer=function(g){
+
+
+if(!ground[g].isAdmin){
+
+alert("Admin PIN required!");
+
+return;
+
+}
+
+
+const total=
+
+ground[g].matchMinutes*60;
+
+
+ground[g].totalSeconds=
+
+total;
+
+
+ground[g].timerRunning=
+
+false;
+
+
+ground[g].timerStartAt=
+
+null;
+
+
+updateTimerDisplay(g);
+
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/timer"
+),
+
+{
+
+time:total,
+
+running:false,
+
+startAt:null,
+
+matchMinutes:
+ground[g].matchMinutes
+
+}
+
+);
+
+};
+
+
+
+/* =====================================================
+   TIMER DISPLAY
+===================================================== */
+
+function updateTimerDisplay(g){
+
+
+let seconds=
+
+getCurrentRemaining(g);
+
+
+if(
+
+seconds<=0&&
+ground[g].timerRunning
+
+){
+
+
+ground[g].totalSeconds=0;
+
+ground[g].timerRunning=false;
+
+ground[g].timerStartAt=null;
+
+
+
+set(
+
+ref(
+db,
+"ground"+g+"/timer"
+),
+
+{
+
+time:0,
+
+running:false,
+
+startAt:null,
+
+matchMinutes:
+ground[g].matchMinutes
+
+}
+
+);
+
+}
+
+
+const minutes=
+
+Math.floor(
+seconds/60
+);
+
+
+const sec=
+
+seconds%60;
+
+
+$("timer"+g).innerText=
+
+minutes+
+":"+
+String(sec)
+.padStart(2,"0");
+
+}
+
+
+
+/* =====================================================
+   TIMER LOOP
+===================================================== */
+
+setInterval(
+
+()=>{
+
+updateTimerDisplay(1);
+
+updateTimerDisplay(2);
+
+},
+
+250
+
+);
+
 </script>
+
 </body>
 </html>
-"""
-
-out = Path("/mnt/data/SGFI_U19_Handball_Live_Scoreboard.html")
-out.write_text(html, encoding="utf-8")
-print(f"Created: {out}")
