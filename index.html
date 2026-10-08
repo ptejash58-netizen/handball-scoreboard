@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Handball Scoreboard</title>
+<title>SGFI U-19 BOYS HANDBALL STATE TOURNAMENT</title>
 
 <style>
 
@@ -32,17 +32,49 @@ h1 {
     margin: 10px 0;
 }
 
+/* =========================
+   GROUND
+========================= */
+
+.ground-box {
+    border: 3px solid #555;
+    border-radius: 15px;
+    margin: 25px auto;
+    padding: 15px;
+    max-width: 1400px;
+}
+
+.ground-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.ground1-title {
+    color: #00aaff;
+}
+
+.ground2-title {
+    color: #00ff66;
+}
+
+
+/* =========================
+   SCOREBOARD
+========================= */
+
 .scoreboard {
     display: flex;
     justify-content: space-around;
     align-items: center;
-    margin-top: 40px;
+    margin-top: 25px;
     gap: 20px;
 }
 
 .team {
     width: 32%;
 }
+
 
 /* TEAM NAME BOX */
 
@@ -75,6 +107,11 @@ h1 {
     color: yellow;
     font-weight: bold;
 }
+
+
+/* =========================
+   BUTTONS
+========================= */
 
 button {
     padding: 12px 20px;
@@ -115,18 +152,25 @@ button {
     color: black;
 }
 
+
+/* =========================
+   ADMIN
+========================= */
+
 .control {
     display: none;
 }
 
-#adminStatus {
+.adminStatus {
     font-size: 18px;
     color: yellow;
     margin: 10px;
 }
 
 
-/* TEAM NAME + TIME SETTINGS */
+/* =========================
+   SETTINGS
+========================= */
 
 .team-settings {
     display: none;
@@ -168,10 +212,18 @@ button {
 }
 
 
+/* =========================
+   MOBILE
+========================= */
+
 @media(max-width:700px) {
 
     h1 {
-        font-size: 24px;
+        font-size: 22px;
+    }
+
+    .ground-title {
+        font-size: 25px;
     }
 
     .scoreboard {
@@ -218,46 +270,70 @@ button {
 
 <div class="container">
 
-<h1>SGFI U-19 BOYS HANDBALL STATE TOURNAMENT AT-BILIMORA (NAVSARI)</h1>
+<h1>
+SGFI U-19 BOYS HANDBALL STATE TOURNAMENT
+<br>
+AT-BILIMORA (NAVSARI)
+</h1>
 
 
-<!-- ADMIN -->
+<!-- =====================================================
+     GROUND 1
+===================================================== -->
 
-<button class="admin-btn" onclick="openAdmin()">
+<div class="ground-box">
+
+<div class="ground-title ground1-title">
+GROUND 1
+</div>
+
+
+<button
+class="admin-btn"
+onclick="openAdmin(1)">
 ADMIN
 </button>
 
-<div id="adminStatus">
+
+<div
+id="adminStatus1"
+class="adminStatus">
 Viewing Mode
 </div>
 
 
-<!-- SCOREBOARD -->
-
 <div class="scoreboard">
 
 
-<!-- TEAM A -->
+<!-- GROUND 1 TEAM A -->
 
 <div class="team">
 
-<div class="team-name" id="teamAName">
+<div
+class="team-name"
+id="teamAName1">
 AMDAVAD CITY
 </div>
 
-<div class="score" id="scoreA">
+<div
+class="score"
+id="scoreA1">
 0
 </div>
 
-<div class="control">
+<div
+class="control"
+id="scoreControlA1">
 
-<button class="green"
-onclick="changeScore('A',1)">
+<button
+class="green"
+onclick="changeScore(1,'A',1)">
 +1
 </button>
 
-<button class="red"
-onclick="changeScore('A',-1)">
+<button
+class="red"
+onclick="changeScore(1,'A',-1)">
 -1
 </button>
 
@@ -266,30 +342,37 @@ onclick="changeScore('A',-1)">
 </div>
 
 
-<!-- TIME -->
+<!-- GROUND 1 TIMER -->
 
 <div>
 
-<div class="timer" id="timer">
+<div
+class="timer"
+id="timer1">
 0:00
 </div>
 
-<div class="control">
+<div
+class="control"
+id="timerControl1">
 
-<button class="blue"
-onclick="startTimer()">
+<button
+class="blue"
+onclick="startTimer(1)">
 START
 </button>
 
-<button class="orange"
-onclick="stopTimer()">
+<button
+class="orange"
+onclick="stopTimer(1)">
 STOP
 </button>
 
 <br>
 
-<button class="gray"
-onclick="resetTimer()">
+<button
+class="gray"
+onclick="resetTimer(1)">
 RESET
 </button>
 
@@ -298,27 +381,35 @@ RESET
 </div>
 
 
-<!-- TEAM B -->
+<!-- GROUND 1 TEAM B -->
 
 <div class="team">
 
-<div class="team-name" id="teamBName">
+<div
+class="team-name"
+id="teamBName1">
 KHEDA
 </div>
 
-<div class="score" id="scoreB">
+<div
+class="score"
+id="scoreB1">
 0
 </div>
 
-<div class="control">
+<div
+class="control"
+id="scoreControlB1">
 
-<button class="green"
-onclick="changeScore('B',1)">
+<button
+class="green"
+onclick="changeScore(1,'B',1)">
 +1
 </button>
 
-<button class="red"
-onclick="changeScore('B',-1)">
+<button
+class="red"
+onclick="changeScore(1,'B',-1)">
 -1
 </button>
 
@@ -329,16 +420,18 @@ onclick="changeScore('B',-1)">
 </div>
 
 
-<!-- TEAM NAME + MATCH TIME SETTINGS -->
+<!-- GROUND 1 SETTINGS -->
 
-<div class="team-settings" id="teamSettings">
+<div
+class="team-settings"
+id="teamSettings1">
 
 <div class="settings-title">
 TEAM A NAME
 </div>
 
 <input
-id="teamAInput"
+id="teamAInput1"
 class="team-input"
 placeholder="TEAM A NAME">
 
@@ -348,7 +441,7 @@ TEAM B NAME
 </div>
 
 <input
-id="teamBInput"
+id="teamBInput1"
 class="team-input"
 placeholder="TEAM B NAME">
 
@@ -358,7 +451,7 @@ MATCH TIME (MINUTES)
 </div>
 
 <input
-id="matchTimeInput"
+id="matchTimeInput1"
 class="time-input"
 type="number"
 min="1"
@@ -369,9 +462,206 @@ placeholder="Example: 20">
 
 <button
 class="save-names"
-onclick="saveTeamNames()">
+onclick="saveSettings(1)">
 SAVE TEAM NAMES & TIME
 </button>
+
+</div>
+
+</div>
+
+
+
+<!-- =====================================================
+     GROUND 2
+===================================================== -->
+
+<div class="ground-box">
+
+<div class="ground-title ground2-title">
+GROUND 2
+</div>
+
+
+<button
+class="admin-btn"
+onclick="openAdmin(2)">
+ADMIN
+</button>
+
+
+<div
+id="adminStatus2"
+class="adminStatus">
+Viewing Mode
+</div>
+
+
+<div class="scoreboard">
+
+
+<!-- GROUND 2 TEAM A -->
+
+<div class="team">
+
+<div
+class="team-name"
+id="teamAName2">
+TEAM A
+</div>
+
+<div
+class="score"
+id="scoreA2">
+0
+</div>
+
+<div
+class="control"
+id="scoreControlA2">
+
+<button
+class="green"
+onclick="changeScore(2,'A',1)">
++1
+</button>
+
+<button
+class="red"
+onclick="changeScore(2,'A',-1)">
+-1
+</button>
+
+</div>
+
+</div>
+
+
+<!-- GROUND 2 TIMER -->
+
+<div>
+
+<div
+class="timer"
+id="timer2">
+0:00
+</div>
+
+<div
+class="control"
+id="timerControl2">
+
+<button
+class="blue"
+onclick="startTimer(2)">
+START
+</button>
+
+<button
+class="orange"
+onclick="stopTimer(2)">
+STOP
+</button>
+
+<br>
+
+<button
+class="gray"
+onclick="resetTimer(2)">
+RESET
+</button>
+
+</div>
+
+</div>
+
+
+<!-- GROUND 2 TEAM B -->
+
+<div class="team">
+
+<div
+class="team-name"
+id="teamBName2">
+TEAM B
+</div>
+
+<div
+class="score"
+id="scoreB2">
+0
+</div>
+
+<div
+class="control"
+id="scoreControlB2">
+
+<button
+class="green"
+onclick="changeScore(2,'B',1)">
++1
+</button>
+
+<button
+class="red"
+onclick="changeScore(2,'B',-1)">
+-1
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- GROUND 2 SETTINGS -->
+
+<div
+class="team-settings"
+id="teamSettings2">
+
+<div class="settings-title">
+TEAM A NAME
+</div>
+
+<input
+id="teamAInput2"
+class="team-input"
+placeholder="TEAM A NAME">
+
+
+<div class="settings-title">
+TEAM B NAME
+</div>
+
+<input
+id="teamBInput2"
+class="team-input"
+placeholder="TEAM B NAME">
+
+
+<div class="settings-title">
+MATCH TIME (MINUTES)
+</div>
+
+<input
+id="matchTimeInput2"
+class="time-input"
+type="number"
+min="1"
+placeholder="Example: 20">
+
+
+<br>
+
+<button
+class="save-names"
+onclick="saveSettings(2)">
+SAVE TEAM NAMES & TIME
+</button>
+
+</div>
 
 </div>
 
@@ -393,9 +683,9 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js";
 
 
-/* =========================
+/* =====================================================
    FIREBASE
-========================= */
+===================================================== */
 
 const firebaseConfig = {
 
@@ -404,114 +694,178 @@ const firebaseConfig = {
 
 };
 
+
 const app =
     initializeApp(firebaseConfig);
+
 
 const db =
     getDatabase(app);
 
 
-/* =========================
-   VARIABLES
-========================= */
+/* =====================================================
+   GROUND DATA
+===================================================== */
 
-let scoreA = 0;
-let scoreB = 0;
+const ground = {
 
+    1: {
 
-/*
-   MATCH TIME
-   Default = 20 minutes
-*/
+        pin: "1516",
 
-let matchMinutes = 20;
+        scoreA: 0,
+        scoreB: 0,
 
+        matchMinutes: 20,
 
-/*
-   TIMER NOW COUNTS UP
-   0:00 → 1:00 → 2:00 → ... → MATCH TIME
-*/
+        totalSeconds: 0,
 
-let totalSeconds = 0;
+        timerRunning: false,
 
-let timerRunning = false;
+        timerStartAt: null,
 
-let timerStartAt = null;
+        isAdmin: false
 
-let isAdmin = false;
-
-const ADMIN_PIN = "1516";
+    },
 
 
-/* =========================
+    2: {
+
+        pin: "4411",
+
+        scoreA: 0,
+        scoreB: 0,
+
+        matchMinutes: 20,
+
+        totalSeconds: 0,
+
+        timerRunning: false,
+
+        timerStartAt: null,
+
+        isAdmin: false
+
+    }
+
+};
+
+
+/* =====================================================
    ADMIN
-========================= */
+===================================================== */
 
-window.openAdmin = function() {
+window.openAdmin = function(g) {
 
-    if (isAdmin) {
 
-        logoutAdmin();
+    if (ground[g].isAdmin) {
+
+        logoutAdmin(g);
 
         return;
+
     }
 
 
     const pin =
-        prompt("Enter Admin PIN");
+        prompt(
+            "Enter Ground " +
+            g +
+            " Admin PIN"
+        );
 
 
-    if (pin === ADMIN_PIN) {
-
-        isAdmin = true;
+    if (pin === ground[g].pin) {
 
 
-        document.getElementById("adminStatus")
-            .innerText = "ADMIN MODE ON";
+        ground[g].isAdmin = true;
 
 
-        document.getElementById("adminStatus")
-            .style.color = "lightgreen";
+        document.getElementById(
+            "adminStatus" + g
+        ).innerText =
+            "GROUND " +
+            g +
+            " ADMIN MODE ON";
 
 
-        document.querySelectorAll(".control")
-            .forEach(function(element) {
-
-                element.style.display = "block";
-
-            });
+        document.getElementById(
+            "adminStatus" + g
+        ).style.color =
+            "lightgreen";
 
 
-        document.querySelector(".admin-btn")
-            .innerText = "EXIT ADMIN";
+        /* SHOW SCORE BUTTONS */
+
+        document.getElementById(
+            "scoreControlA" + g
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "scoreControlB" + g
+        ).style.display =
+            "block";
+
+
+        /* SHOW TIMER BUTTONS */
+
+        document.getElementById(
+            "timerControl" + g
+        ).style.display =
+            "block";
 
 
         /* SHOW SETTINGS */
 
-        document.getElementById("teamSettings")
-            .style.display = "block";
+        document.getElementById(
+            "teamSettings" + g
+        ).style.display =
+            "block";
 
 
         /* CURRENT TEAM NAMES */
 
-        document.getElementById("teamAInput")
-            .value =
-            document.getElementById("teamAName")
-            .innerText;
+        document.getElementById(
+            "teamAInput" + g
+        ).value =
+            document.getElementById(
+                "teamAName" + g
+            ).innerText;
 
 
-        document.getElementById("teamBInput")
-            .value =
-            document.getElementById("teamBName")
-            .innerText;
+        document.getElementById(
+            "teamBInput" + g
+        ).value =
+            document.getElementById(
+                "teamBName" + g
+            ).innerText;
 
 
         /* CURRENT MATCH TIME */
 
-        document.getElementById("matchTimeInput")
-            .value = matchMinutes;
+        document.getElementById(
+            "matchTimeInput" + g
+        ).value =
+            ground[g].matchMinutes;
+
+
+        /* CHANGE BUTTON */
+
+        const buttons =
+            document.querySelectorAll(
+                ".ground-box"
+            );
+
+
+        buttons[g - 1]
+            .querySelector(".admin-btn")
+            .innerText =
+            "EXIT ADMIN";
 
     }
+
 
     else {
 
@@ -522,185 +876,246 @@ window.openAdmin = function() {
 };
 
 
-/* =========================
+/* =====================================================
    LOGOUT
-========================= */
+===================================================== */
 
-function logoutAdmin() {
-
-    isAdmin = false;
+function logoutAdmin(g) {
 
 
-    document.getElementById("adminStatus")
-        .innerText = "Viewing Mode";
+    ground[g].isAdmin = false;
 
 
-    document.getElementById("adminStatus")
-        .style.color = "yellow";
+    document.getElementById(
+        "adminStatus" + g
+    ).innerText =
+        "Viewing Mode";
 
 
-    document.querySelectorAll(".control")
-        .forEach(function(element) {
-
-            element.style.display = "none";
-
-        });
+    document.getElementById(
+        "adminStatus" + g
+    ).style.color =
+        "yellow";
 
 
-    document.getElementById("teamSettings")
-        .style.display = "none";
+    document.getElementById(
+        "scoreControlA" + g
+    ).style.display =
+        "none";
 
 
-    document.querySelector(".admin-btn")
-        .innerText = "ADMIN";
+    document.getElementById(
+        "scoreControlB" + g
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "timerControl" + g
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "teamSettings" + g
+    ).style.display =
+        "none";
+
+
+    document.querySelectorAll(
+        ".ground-box"
+    )[g - 1]
+    .querySelector(".admin-btn")
+    .innerText =
+        "ADMIN";
 
 }
 
 
-/* =========================
-   LIVE FIREBASE DATA
-========================= */
+/* =====================================================
+   FIREBASE LIVE DATA
+===================================================== */
 
-onValue(
-
-    ref(db),
-
-    function(snapshot) {
-
-        const data =
-            snapshot.val();
+function loadGround(g) {
 
 
-        if (!data) {
+    onValue(
 
-            return;
+        ref(db, "ground" + g),
 
-        }
-
-
-        /* =====================
-           SCORE
-        ===================== */
-
-        if (data.score) {
-
-            scoreA =
-                Number(data.score.A || 0);
-
-            scoreB =
-                Number(data.score.B || 0);
-
-        }
+        function(snapshot) {
 
 
-        document.getElementById("scoreA")
-            .innerText = scoreA;
+            const data =
+                snapshot.val();
 
 
-        document.getElementById("scoreB")
-            .innerText = scoreB;
+            if (!data) {
 
-
-        /* =====================
-           TIMER
-        ===================== */
-
-        if (data.timer) {
-
-            matchMinutes =
-                Number(
-                    data.timer.matchMinutes ?? 20
-                );
-
-
-            totalSeconds =
-                Number(
-                    data.timer.time ?? 0
-                );
-
-
-            timerRunning =
-                data.timer.running || false;
-
-
-            timerStartAt =
-                data.timer.startAt || null;
-
-        }
-
-
-        /* =====================
-           TEAM NAMES
-        ===================== */
-
-        if (data.teams) {
-
-            if (data.teams.A) {
-
-                document.getElementById("teamAName")
-                    .innerText = data.teams.A;
+                return;
 
             }
 
 
-            if (data.teams.B) {
+            /* =========================
+               SCORE
+            ========================= */
 
-                document.getElementById("teamBName")
-                    .innerText = data.teams.B;
+            if (data.score) {
+
+
+                ground[g].scoreA =
+                    Number(
+                        data.score.A || 0
+                    );
+
+
+                ground[g].scoreB =
+                    Number(
+                        data.score.B || 0
+                    );
 
             }
 
+
+            document.getElementById(
+                "scoreA" + g
+            ).innerText =
+                ground[g].scoreA;
+
+
+            document.getElementById(
+                "scoreB" + g
+            ).innerText =
+                ground[g].scoreB;
+
+
+            /* =========================
+               TIMER
+            ========================= */
+
+            if (data.timer) {
+
+
+                ground[g].matchMinutes =
+                    Number(
+                        data.timer.matchMinutes ?? 20
+                    );
+
+
+                ground[g].totalSeconds =
+                    Number(
+                        data.timer.time ?? 0
+                    );
+
+
+                ground[g].timerRunning =
+                    data.timer.running || false;
+
+
+                ground[g].timerStartAt =
+                    data.timer.startAt || null;
+
+            }
+
+
+            /* =========================
+               TEAM NAMES
+            ========================= */
+
+            if (data.teams) {
+
+
+                if (data.teams.A) {
+
+                    document.getElementById(
+                        "teamAName" + g
+                    ).innerText =
+                        data.teams.A;
+
+                }
+
+
+                if (data.teams.B) {
+
+                    document.getElementById(
+                        "teamBName" + g
+                    ).innerText =
+                        data.teams.B;
+
+                }
+
+            }
+
+        },
+
+        function(error) {
+
+            console.log(
+                "Ground " +
+                g +
+                " Firebase error:",
+                error
+            );
+
         }
 
-    },
+    );
 
-    function(error) {
-
-        console.log(
-            "Firebase error:",
-            error
-        );
-
-    }
-
-);
+}
 
 
-/* =========================
+/* LOAD BOTH GROUNDS */
+
+loadGround(1);
+
+loadGround(2);
+
+
+/* =====================================================
    SAVE TEAM NAMES + TIME
-========================= */
+===================================================== */
 
-window.saveTeamNames = function() {
+window.saveSettings =
+function(g) {
 
-    if (!isAdmin) {
 
-        alert("Admin PIN required!");
+    if (!ground[g].isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
 
         return;
 
     }
 
 
-    let teamA =
-        document.getElementById("teamAInput")
-        .value.trim();
+    const teamA =
+        document.getElementById(
+            "teamAInput" + g
+        ).value.trim();
 
 
-    let teamB =
-        document.getElementById("teamBInput")
-        .value.trim();
+    const teamB =
+        document.getElementById(
+            "teamBInput" + g
+        ).value.trim();
 
 
-    let newMatchMinutes =
+    const newMatchMinutes =
         Number(
-            document.getElementById("matchTimeInput")
-            .value
+            document.getElementById(
+                "matchTimeInput" + g
+            ).value
         );
 
 
     if (teamA === "") {
 
-        alert("Enter Team A Name");
+        alert(
+            "Enter Team A Name"
+        );
 
         return;
 
@@ -709,7 +1124,9 @@ window.saveTeamNames = function() {
 
     if (teamB === "") {
 
-        alert("Enter Team B Name");
+        alert(
+            "Enter Team B Name"
+        );
 
         return;
 
@@ -721,7 +1138,9 @@ window.saveTeamNames = function() {
         newMatchMinutes < 1
     ) {
 
-        alert("Enter Match Time in minutes");
+        alert(
+            "Enter Match Time in minutes"
+        );
 
         return;
 
@@ -730,43 +1149,52 @@ window.saveTeamNames = function() {
 
     /* SCREEN */
 
-    document.getElementById("teamAName")
-        .innerText = teamA;
+    document.getElementById(
+        "teamAName" + g
+    ).innerText =
+        teamA;
 
 
-    document.getElementById("teamBName")
-        .innerText = teamB;
+    document.getElementById(
+        "teamBName" + g
+    ).innerText =
+        teamB;
 
 
-    matchMinutes =
+    ground[g].matchMinutes =
         newMatchMinutes;
 
 
-    /*
-       New time setting:
-       Timer starts from 0
-    */
+    /* RESET TIMER */
 
-    totalSeconds = 0;
+    ground[g].totalSeconds = 0;
 
-    timerRunning = false;
+    ground[g].timerRunning = false;
 
-    timerStartAt = null;
+    ground[g].timerStartAt = null;
 
 
-    document.getElementById("timer")
-        .innerText = "0:00";
+    document.getElementById(
+        "timer" + g
+    ).innerText =
+        "0:00";
 
 
     /* SAVE TEAM NAMES */
 
     set(
 
-        ref(db, "teams"),
+        ref(
+            db,
+            "ground" + g + "/teams"
+        ),
 
         {
+
             A: teamA,
+
             B: teamB
+
         }
 
     )
@@ -780,24 +1208,35 @@ window.saveTeamNames = function() {
     });
 
 
-    /* SAVE MATCH TIME */
+    /* SAVE TIME */
 
     set(
 
-        ref(db, "timer"),
+        ref(
+            db,
+            "ground" + g + "/timer"
+        ),
 
         {
+
             time: 0,
+
             running: false,
+
             startAt: null,
-            matchMinutes: matchMinutes
+
+            matchMinutes:
+                ground[g].matchMinutes
+
         }
 
     )
     .then(function() {
 
         alert(
-            "Team names and match time saved successfully"
+            "Ground " +
+            g +
+            " Team Names & Time Saved"
         );
 
     })
@@ -813,16 +1252,19 @@ window.saveTeamNames = function() {
 };
 
 
-/* =========================
+/* =====================================================
    SCORE
-========================= */
+===================================================== */
 
 window.changeScore =
-function(team, value) {
+function(g, team, value) {
 
-    if (!isAdmin) {
 
-        alert("Admin PIN required!");
+    if (!ground[g].isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
 
         return;
 
@@ -831,12 +1273,15 @@ function(team, value) {
 
     if (team === "A") {
 
-        scoreA += value;
+
+        ground[g].scoreA += value;
 
 
-        if (scoreA < 0) {
+        if (
+            ground[g].scoreA < 0
+        ) {
 
-            scoreA = 0;
+            ground[g].scoreA = 0;
 
         }
 
@@ -845,33 +1290,48 @@ function(team, value) {
 
     if (team === "B") {
 
-        scoreB += value;
+
+        ground[g].scoreB += value;
 
 
-        if (scoreB < 0) {
+        if (
+            ground[g].scoreB < 0
+        ) {
 
-            scoreB = 0;
+            ground[g].scoreB = 0;
 
         }
 
     }
 
 
-    document.getElementById("scoreA")
-        .innerText = scoreA;
+    document.getElementById(
+        "scoreA" + g
+    ).innerText =
+        ground[g].scoreA;
 
 
-    document.getElementById("scoreB")
-        .innerText = scoreB;
+    document.getElementById(
+        "scoreB" + g
+    ).innerText =
+        ground[g].scoreB;
 
+
+    /* SAVE */
 
     set(
 
-        ref(db, "score"),
+        ref(
+            db,
+            "ground" + g + "/score"
+        ),
 
         {
-            A: scoreA,
-            B: scoreB
+
+            A: ground[g].scoreA,
+
+            B: ground[g].scoreB
+
         }
 
     )
@@ -887,38 +1347,30 @@ function(team, value) {
 };
 
 
-/* =========================
+/* =====================================================
    TIMER DISPLAY
-========================= */
+===================================================== */
 
-function updateTimerDisplay() {
+function updateTimerDisplay(g) {
+
 
     let seconds =
-        totalSeconds;
+        ground[g].totalSeconds;
 
-
-    /*
-       COUNT UP TIMER
-
-       0:00
-       0:01
-       0:02
-       ...
-       1:00
-       2:00
-       ...
-    */
 
     if (
-        timerRunning &&
-        timerStartAt
+        ground[g].timerRunning &&
+        ground[g].timerStartAt
     ) {
+
 
         seconds =
             Math.floor(
 
-                (Date.now() - timerStartAt)
-                / 1000
+                (
+                    Date.now() -
+                    ground[g].timerStartAt
+                ) / 1000
 
             );
 
@@ -926,37 +1378,61 @@ function updateTimerDisplay() {
 
 
     const maximumSeconds =
-        matchMinutes * 60;
+        ground[g].matchMinutes * 60;
 
 
-    /*
-       STOP AT MATCH TIME
-    */
+    /* STOP AT MATCH TIME */
 
-    if (seconds >= maximumSeconds) {
+    if (
+        seconds >= maximumSeconds
+    ) {
+
 
         seconds =
             maximumSeconds;
 
 
-        if (timerRunning) {
+        if (
+            ground[g].timerRunning
+        ) {
 
-            timerRunning = false;
 
-            totalSeconds = maximumSeconds;
+            ground[g].timerRunning =
+                false;
 
-            timerStartAt = null;
+
+            ground[g].totalSeconds =
+                maximumSeconds;
+
+
+            ground[g].timerStartAt =
+                null;
 
 
             set(
 
-                ref(db, "timer"),
+                ref(
+                    db,
+                    "ground" +
+                    g +
+                    "/timer"
+                ),
 
                 {
-                    time: maximumSeconds,
-                    running: false,
-                    startAt: null,
-                    matchMinutes: matchMinutes
+
+                    time:
+                        maximumSeconds,
+
+                    running:
+                        false,
+
+                    startAt:
+                        null,
+
+                    matchMinutes:
+                        ground[g]
+                        .matchMinutes
+
                 }
 
             );
@@ -966,37 +1442,43 @@ function updateTimerDisplay() {
     }
 
 
-    totalSeconds =
+    ground[g].totalSeconds =
         seconds;
 
 
     const minutes =
-        Math.floor(seconds / 60);
+        Math.floor(
+            seconds / 60
+        );
 
 
     const sec =
         seconds % 60;
 
 
-    document.getElementById("timer")
-        .innerText =
+    document.getElementById(
+        "timer" + g
+    ).innerText =
 
         minutes +
         ":" +
-        String(sec).padStart(2, "0");
+        String(sec)
+            .padStart(2, "0");
 
 }
 
 
-/* =========================
+/* =====================================================
    TIMER LOOP
-========================= */
+===================================================== */
 
 setInterval(
 
     function() {
 
-        updateTimerDisplay();
+        updateTimerDisplay(1);
+
+        updateTimerDisplay(2);
 
     },
 
@@ -1005,23 +1487,28 @@ setInterval(
 );
 
 
-/* =========================
+/* =====================================================
    START TIMER
-========================= */
+===================================================== */
 
 window.startTimer =
-function() {
+function(g) {
 
-    if (!isAdmin) {
 
-        alert("Admin PIN required!");
+    if (!ground[g].isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
 
         return;
 
     }
 
 
-    if (timerRunning) {
+    if (
+        ground[g].timerRunning
+    ) {
 
         return;
 
@@ -1029,37 +1516,56 @@ function() {
 
 
     const maximumSeconds =
-        matchMinutes * 60;
+        ground[g].matchMinutes * 60;
 
 
-    if (totalSeconds >= maximumSeconds) {
+    if (
+        ground[g].totalSeconds >=
+        maximumSeconds
+    ) {
 
-        totalSeconds = 0;
+        ground[g].totalSeconds =
+            0;
 
     }
 
 
-    /*
-       Continue from current time
-    */
+    ground[g].timerStartAt =
 
-    timerStartAt =
         Date.now() -
-        (totalSeconds * 1000);
+        (
+            ground[g].totalSeconds *
+            1000
+        );
 
 
-    timerRunning = true;
+    ground[g].timerRunning =
+        true;
 
 
     set(
 
-        ref(db, "timer"),
+        ref(
+            db,
+            "ground" +
+            g +
+            "/timer"
+        ),
 
         {
-            time: totalSeconds,
-            running: true,
-            startAt: timerStartAt,
-            matchMinutes: matchMinutes
+
+            time:
+                ground[g].totalSeconds,
+
+            running:
+                true,
+
+            startAt:
+                ground[g].timerStartAt,
+
+            matchMinutes:
+                ground[g].matchMinutes
+
         }
 
     )
@@ -1075,64 +1581,92 @@ function() {
 };
 
 
-/* =========================
+/* =====================================================
    STOP TIMER
-========================= */
+===================================================== */
 
 window.stopTimer =
-function() {
-
-    if (!isAdmin) {
-
-        alert("Admin PIN required!");
-
-        return;
-
-    }
+function(g) {
 
 
-    if (!timerRunning) {
+    if (!ground[g].isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
 
         return;
 
     }
 
 
-    totalSeconds =
+    if (
+        !ground[g].timerRunning
+    ) {
+
+        return;
+
+    }
+
+
+    ground[g].totalSeconds =
+
         Math.floor(
 
-            (Date.now() - timerStartAt)
-            / 1000
+            (
+                Date.now() -
+                ground[g].timerStartAt
+            ) / 1000
 
         );
 
 
     const maximumSeconds =
-        matchMinutes * 60;
+        ground[g].matchMinutes * 60;
 
 
-    if (totalSeconds > maximumSeconds) {
+    if (
+        ground[g].totalSeconds >
+        maximumSeconds
+    ) {
 
-        totalSeconds =
+        ground[g].totalSeconds =
             maximumSeconds;
 
     }
 
 
-    timerRunning = false;
+    ground[g].timerRunning =
+        false;
 
-    timerStartAt = null;
+
+    ground[g].timerStartAt =
+        null;
 
 
     set(
 
-        ref(db, "timer"),
+        ref(
+            db,
+            "ground" +
+            g +
+            "/timer"
+        ),
 
         {
-            time: totalSeconds,
-            running: false,
-            startAt: null,
-            matchMinutes: matchMinutes
+
+            time:
+                ground[g].totalSeconds,
+
+            running:
+                false,
+
+            startAt:
+                null,
+
+            matchMinutes:
+                ground[g].matchMinutes
+
         }
 
     )
@@ -1148,65 +1682,81 @@ function() {
 };
 
 
-/* =========================
+/* =====================================================
    RESET TIMER + SCORE
-========================= */
+===================================================== */
 
 window.resetTimer =
-function() {
+function(g) {
 
-    if (!isAdmin) {
 
-        alert("Admin PIN required!");
+    if (!ground[g].isAdmin) {
+
+        alert(
+            "Admin PIN required!"
+        );
 
         return;
 
     }
 
 
-    /* =====================
-       SCORE RESET
-    ===================== */
+    /* SCORE RESET */
 
-    scoreA = 0;
+    ground[g].scoreA = 0;
 
-    scoreB = 0;
+    ground[g].scoreB = 0;
 
 
-    document.getElementById("scoreA")
-        .innerText = "0";
+    document.getElementById(
+        "scoreA" + g
+    ).innerText =
+        "0";
 
 
-    document.getElementById("scoreB")
-        .innerText = "0";
+    document.getElementById(
+        "scoreB" + g
+    ).innerText =
+        "0";
 
 
-    /* =====================
-       TIMER RESET
-    ===================== */
+    /* TIMER RESET */
 
-    totalSeconds = 0;
-
-    timerRunning = false;
-
-    timerStartAt = null;
+    ground[g].totalSeconds =
+        0;
 
 
-    document.getElementById("timer")
-        .innerText = "0:00";
+    ground[g].timerRunning =
+        false;
 
 
-    /* =====================
-       SAVE SCORE RESET
-    ===================== */
+    ground[g].timerStartAt =
+        null;
+
+
+    document.getElementById(
+        "timer" + g
+    ).innerText =
+        "0:00";
+
+
+    /* SAVE SCORE */
 
     set(
 
-        ref(db, "score"),
+        ref(
+            db,
+            "ground" +
+            g +
+            "/score"
+        ),
 
         {
+
             A: 0,
+
             B: 0
+
         }
 
     )
@@ -1220,19 +1770,28 @@ function() {
     });
 
 
-    /* =====================
-       SAVE TIMER RESET
-    ===================== */
+    /* SAVE TIMER */
 
     set(
 
-        ref(db, "timer"),
+        ref(
+            db,
+            "ground" +
+            g +
+            "/timer"
+        ),
 
         {
+
             time: 0,
+
             running: false,
+
             startAt: null,
-            matchMinutes: matchMinutes
+
+            matchMinutes:
+                ground[g].matchMinutes
+
         }
 
     )
