@@ -37,17 +37,31 @@ h1 {
     justify-content: space-around;
     align-items: center;
     margin-top: 40px;
-    gap: 10px;
+    gap: 20px;
 }
 
 .team {
     width: 32%;
 }
 
+/* TEAM NAME BOX */
+
 .team-name {
     font-size: 40px;
     font-weight: bold;
     margin-bottom: 15px;
+
+    border: 3px solid white;
+    border-radius: 10px;
+    padding: 12px 10px;
+
+    min-height: 70px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    background: #111;
 }
 
 .score {
@@ -111,16 +125,29 @@ button {
     margin: 10px;
 }
 
-/* TEAM NAME SETTINGS */
+
+/* TEAM NAME + TIME SETTINGS */
 
 .team-settings {
     display: none;
     margin-top: 30px;
-    padding: 15px;
+    padding: 20px;
+    border: 2px solid #555;
+    border-radius: 10px;
 }
 
 .team-input {
     width: 250px;
+    padding: 12px;
+    margin: 5px;
+    font-size: 18px;
+    border-radius: 6px;
+    border: none;
+    text-align: center;
+}
+
+.time-input {
+    width: 150px;
     padding: 12px;
     margin: 5px;
     font-size: 18px;
@@ -134,6 +161,13 @@ button {
     color: white;
 }
 
+.settings-title {
+    font-size: 20px;
+    margin: 8px;
+    color: yellow;
+}
+
+
 @media(max-width:700px) {
 
     h1 {
@@ -142,10 +176,13 @@ button {
 
     .scoreboard {
         margin-top: 20px;
+        gap: 5px;
     }
 
     .team-name {
         font-size: 22px;
+        min-height: 55px;
+        padding: 8px 5px;
     }
 
     .score {
@@ -166,6 +203,11 @@ button {
         max-width: 300px;
     }
 
+    .time-input {
+        width: 90%;
+        max-width: 200px;
+    }
+
 }
 
 </style>
@@ -176,7 +218,7 @@ button {
 
 <div class="container">
 
-<h1>HANDBALL SCOREBOARD</h1>
+<h1>SGFI U-19 BOYS HANDBALL STATE TOURNAMENT AT-BILIMORA (NAVSARI)</h1>
 
 
 <!-- ADMIN -->
@@ -229,7 +271,7 @@ onclick="changeScore('A',-1)">
 <div>
 
 <div class="timer" id="timer">
-20:00
+0:00
 </div>
 
 <div class="control">
@@ -287,26 +329,48 @@ onclick="changeScore('B',-1)">
 </div>
 
 
-<!-- TEAM NAME SETTINGS -->
+<!-- TEAM NAME + MATCH TIME SETTINGS -->
 
 <div class="team-settings" id="teamSettings">
+
+<div class="settings-title">
+TEAM A NAME
+</div>
 
 <input
 id="teamAInput"
 class="team-input"
 placeholder="TEAM A NAME">
 
+
+<div class="settings-title">
+TEAM B NAME
+</div>
+
 <input
 id="teamBInput"
 class="team-input"
 placeholder="TEAM B NAME">
+
+
+<div class="settings-title">
+MATCH TIME (MINUTES)
+</div>
+
+<input
+id="matchTimeInput"
+class="time-input"
+type="number"
+min="1"
+placeholder="Example: 20">
+
 
 <br>
 
 <button
 class="save-names"
 onclick="saveTeamNames()">
-SAVE TEAM NAMES
+SAVE TEAM NAMES & TIME
 </button>
 
 </div>
@@ -354,10 +418,25 @@ const db =
 let scoreA = 0;
 let scoreB = 0;
 
-let totalSeconds = 1200;
+
+/*
+   MATCH TIME
+   Default = 20 minutes
+*/
+
+let matchMinutes = 20;
+
+
+/*
+   TIMER NOW COUNTS UP
+   0:00 → 1:00 → 2:00 → ... → MATCH TIME
+*/
+
+let totalSeconds = 0;
 
 let timerRunning = false;
-let timerEndAt = null;
+
+let timerStartAt = null;
 
 let isAdmin = false;
 
@@ -377,18 +456,23 @@ window.openAdmin = function() {
         return;
     }
 
+
     const pin =
         prompt("Enter Admin PIN");
+
 
     if (pin === ADMIN_PIN) {
 
         isAdmin = true;
 
+
         document.getElementById("adminStatus")
             .innerText = "ADMIN MODE ON";
 
+
         document.getElementById("adminStatus")
             .style.color = "lightgreen";
+
 
         document.querySelectorAll(".control")
             .forEach(function(element) {
@@ -397,27 +481,35 @@ window.openAdmin = function() {
 
             });
 
+
         document.querySelector(".admin-btn")
             .innerText = "EXIT ADMIN";
 
 
-        /* SHOW TEAM SETTINGS */
+        /* SHOW SETTINGS */
 
         document.getElementById("teamSettings")
             .style.display = "block";
 
 
-        /* PUT CURRENT NAMES IN BOXES */
+        /* CURRENT TEAM NAMES */
 
         document.getElementById("teamAInput")
             .value =
             document.getElementById("teamAName")
             .innerText;
 
+
         document.getElementById("teamBInput")
             .value =
             document.getElementById("teamBName")
             .innerText;
+
+
+        /* CURRENT MATCH TIME */
+
+        document.getElementById("matchTimeInput")
+            .value = matchMinutes;
 
     }
 
@@ -438,11 +530,14 @@ function logoutAdmin() {
 
     isAdmin = false;
 
+
     document.getElementById("adminStatus")
         .innerText = "Viewing Mode";
 
+
     document.getElementById("adminStatus")
         .style.color = "yellow";
+
 
     document.querySelectorAll(".control")
         .forEach(function(element) {
@@ -451,8 +546,10 @@ function logoutAdmin() {
 
         });
 
+
     document.getElementById("teamSettings")
         .style.display = "none";
+
 
     document.querySelector(".admin-btn")
         .innerText = "ADMIN";
@@ -473,6 +570,7 @@ onValue(
         const data =
             snapshot.val();
 
+
         if (!data) {
 
             return;
@@ -480,7 +578,9 @@ onValue(
         }
 
 
-        /* SCORE */
+        /* =====================
+           SCORE
+        ===================== */
 
         if (data.score) {
 
@@ -492,32 +592,46 @@ onValue(
 
         }
 
+
         document.getElementById("scoreA")
             .innerText = scoreA;
+
 
         document.getElementById("scoreB")
             .innerText = scoreB;
 
 
-        /* TIMER */
+        /* =====================
+           TIMER
+        ===================== */
 
         if (data.timer) {
 
+            matchMinutes =
+                Number(
+                    data.timer.matchMinutes ?? 20
+                );
+
+
             totalSeconds =
                 Number(
-                    data.timer.time ?? 1200
+                    data.timer.time ?? 0
                 );
+
 
             timerRunning =
                 data.timer.running || false;
 
-            timerEndAt =
-                data.timer.endAt || null;
+
+            timerStartAt =
+                data.timer.startAt || null;
 
         }
 
 
-        /* TEAM NAMES */
+        /* =====================
+           TEAM NAMES
+        ===================== */
 
         if (data.teams) {
 
@@ -527,6 +641,7 @@ onValue(
                     .innerText = data.teams.A;
 
             }
+
 
             if (data.teams.B) {
 
@@ -552,7 +667,7 @@ onValue(
 
 
 /* =========================
-   SAVE TEAM NAMES
+   SAVE TEAM NAMES + TIME
 ========================= */
 
 window.saveTeamNames = function() {
@@ -570,9 +685,17 @@ window.saveTeamNames = function() {
         document.getElementById("teamAInput")
         .value.trim();
 
+
     let teamB =
         document.getElementById("teamBInput")
         .value.trim();
+
+
+    let newMatchMinutes =
+        Number(
+            document.getElementById("matchTimeInput")
+            .value
+        );
 
 
     if (teamA === "") {
@@ -593,16 +716,49 @@ window.saveTeamNames = function() {
     }
 
 
+    if (
+        !newMatchMinutes ||
+        newMatchMinutes < 1
+    ) {
+
+        alert("Enter Match Time in minutes");
+
+        return;
+
+    }
+
+
     /* SCREEN */
 
     document.getElementById("teamAName")
         .innerText = teamA;
 
+
     document.getElementById("teamBName")
         .innerText = teamB;
 
 
-    /* FIREBASE */
+    matchMinutes =
+        newMatchMinutes;
+
+
+    /*
+       New time setting:
+       Timer starts from 0
+    */
+
+    totalSeconds = 0;
+
+    timerRunning = false;
+
+    timerStartAt = null;
+
+
+    document.getElementById("timer")
+        .innerText = "0:00";
+
+
+    /* SAVE TEAM NAMES */
 
     set(
 
@@ -614,15 +770,41 @@ window.saveTeamNames = function() {
         }
 
     )
+    .catch(function(error) {
+
+        alert(
+            "Team name save error: " +
+            error.message
+        );
+
+    });
+
+
+    /* SAVE MATCH TIME */
+
+    set(
+
+        ref(db, "timer"),
+
+        {
+            time: 0,
+            running: false,
+            startAt: null,
+            matchMinutes: matchMinutes
+        }
+
+    )
     .then(function() {
 
-        alert("Team names saved successfully");
+        alert(
+            "Team names and match time saved successfully"
+        );
 
     })
     .catch(function(error) {
 
         alert(
-            "Team name save error: " +
+            "Time save error: " +
             error.message
         );
 
@@ -651,6 +833,7 @@ function(team, value) {
 
         scoreA += value;
 
+
         if (scoreA < 0) {
 
             scoreA = 0;
@@ -664,6 +847,7 @@ function(team, value) {
 
         scoreB += value;
 
+
         if (scoreB < 0) {
 
             scoreB = 0;
@@ -675,6 +859,7 @@ function(team, value) {
 
     document.getElementById("scoreA")
         .innerText = scoreA;
+
 
     document.getElementById("scoreB")
         .innerText = scoreB;
@@ -712,30 +897,82 @@ function updateTimerDisplay() {
         totalSeconds;
 
 
+    /*
+       COUNT UP TIMER
+
+       0:00
+       0:01
+       0:02
+       ...
+       1:00
+       2:00
+       ...
+    */
+
     if (
         timerRunning &&
-        timerEndAt
+        timerStartAt
     ) {
 
         seconds =
-            Math.max(
+            Math.floor(
 
-                0,
-
-                Math.ceil(
-
-                    (timerEndAt - Date.now())
-                    / 1000
-
-                )
+                (Date.now() - timerStartAt)
+                / 1000
 
             );
 
     }
 
 
+    const maximumSeconds =
+        matchMinutes * 60;
+
+
+    /*
+       STOP AT MATCH TIME
+    */
+
+    if (seconds >= maximumSeconds) {
+
+        seconds =
+            maximumSeconds;
+
+
+        if (timerRunning) {
+
+            timerRunning = false;
+
+            totalSeconds = maximumSeconds;
+
+            timerStartAt = null;
+
+
+            set(
+
+                ref(db, "timer"),
+
+                {
+                    time: maximumSeconds,
+                    running: false,
+                    startAt: null,
+                    matchMinutes: matchMinutes
+                }
+
+            );
+
+        }
+
+    }
+
+
+    totalSeconds =
+        seconds;
+
+
     const minutes =
         Math.floor(seconds / 60);
+
 
     const sec =
         seconds % 60;
@@ -747,20 +984,6 @@ function updateTimerDisplay() {
         minutes +
         ":" +
         String(sec).padStart(2, "0");
-
-
-    if (
-        timerRunning &&
-        seconds <= 0
-    ) {
-
-        timerRunning = false;
-
-        timerEndAt = null;
-
-        totalSeconds = 0;
-
-    }
 
 }
 
@@ -783,7 +1006,7 @@ setInterval(
 
 
 /* =========================
-   START
+   START TIMER
 ========================= */
 
 window.startTimer =
@@ -805,16 +1028,25 @@ function() {
     }
 
 
-    if (totalSeconds <= 0) {
+    const maximumSeconds =
+        matchMinutes * 60;
 
-        totalSeconds = 1200;
+
+    if (totalSeconds >= maximumSeconds) {
+
+        totalSeconds = 0;
 
     }
 
 
-    timerEndAt =
-        Date.now() +
+    /*
+       Continue from current time
+    */
+
+    timerStartAt =
+        Date.now() -
         (totalSeconds * 1000);
+
 
     timerRunning = true;
 
@@ -826,7 +1058,8 @@ function() {
         {
             time: totalSeconds,
             running: true,
-            endAt: timerEndAt
+            startAt: timerStartAt,
+            matchMinutes: matchMinutes
         }
 
     )
@@ -843,7 +1076,7 @@ function() {
 
 
 /* =========================
-   STOP
+   STOP TIMER
 ========================= */
 
 window.stopTimer =
@@ -866,22 +1099,29 @@ function() {
 
 
     totalSeconds =
-        Math.max(
+        Math.floor(
 
-            0,
-
-            Math.ceil(
-
-                (timerEndAt - Date.now())
-                / 1000
-
-            )
+            (Date.now() - timerStartAt)
+            / 1000
 
         );
 
 
+    const maximumSeconds =
+        matchMinutes * 60;
+
+
+    if (totalSeconds > maximumSeconds) {
+
+        totalSeconds =
+            maximumSeconds;
+
+    }
+
+
     timerRunning = false;
-    timerEndAt = null;
+
+    timerStartAt = null;
 
 
     set(
@@ -891,7 +1131,8 @@ function() {
         {
             time: totalSeconds,
             running: false,
-            endAt: null
+            startAt: null,
+            matchMinutes: matchMinutes
         }
 
     )
@@ -923,31 +1164,41 @@ function() {
     }
 
 
-    /* SCORE RESET */
+    /* =====================
+       SCORE RESET
+    ===================== */
 
     scoreA = 0;
+
     scoreB = 0;
 
 
     document.getElementById("scoreA")
         .innerText = "0";
 
+
     document.getElementById("scoreB")
         .innerText = "0";
 
 
-    /* TIMER RESET */
+    /* =====================
+       TIMER RESET
+    ===================== */
 
-    totalSeconds = 1200;
+    totalSeconds = 0;
+
     timerRunning = false;
-    timerEndAt = null;
+
+    timerStartAt = null;
 
 
     document.getElementById("timer")
-        .innerText = "20:00";
+        .innerText = "0:00";
 
 
-    /* SAVE SCORE RESET */
+    /* =====================
+       SAVE SCORE RESET
+    ===================== */
 
     set(
 
@@ -969,16 +1220,19 @@ function() {
     });
 
 
-    /* SAVE TIMER RESET */
+    /* =====================
+       SAVE TIMER RESET
+    ===================== */
 
     set(
 
         ref(db, "timer"),
 
         {
-            time: 1200,
+            time: 0,
             running: false,
-            endAt: null
+            startAt: null,
+            matchMinutes: matchMinutes
         }
 
     )
